@@ -1,0 +1,108 @@
+@font-face {
+    font-family: 'weather';
+    src: url('../fonts/meteocons-webfont.eot');
+    src: url('../fonts/meteocons-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/meteocons-webfont.woff') format('woff'),
+         url('../fonts/meteocons-webfont.ttf') format('truetype'),
+         url('../fonts/meteocons-webfont.svg#MeteoconsRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+[class^="wi-"],
+[class*=" wi-"] {
+  font-family: weather;
+  font-weight: normal;
+  font-style: normal;
+  text-decoration: inherit;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  *margin-right: .3em;
+}
+[class^="wi-"]:before,
+[class*=" wi-"]:before {
+  text-decoration: inherit;
+  display: inline-block;
+  speak: none;
+}
+
+.wi-qing:before {
+  content: "B";
+}
+.wi-duoyun:before {
+  content: "H";
+}
+.wi-yin:before {
+  content: "Y";
+}
+.wi-wu:before {
+  content: "L";
+}
+.wi-mai:before {
+  content: "J";
+}
+.wi-fuchen:before {
+  content: "J";
+}
+
+.wi-xiaoyu:before {
+  content: "Q";
+}
+.wi-zhenyu:before {
+  content: "T";
+}
+.wi-zhongyu:before {
+  content: "R";
+}
+.wi-dayu:before {
+  content: "R";
+}
+.wi-baoyu:before {
+  content: "R";
+}
+.wi-dabaoyu:before {
+  content: "R";
+}
+.wi-tedabaoyu:before {
+  content: "R";
+}
+.wi-leizhenyu:before {
+  content: "O";
+}
+.wi-leizhenyubanyoubingbao:before {
+  content: "P";
+}
+
+.wi-xiaoyuzhuanzhongyu:before {
+  content: "Q";
+}
+.wi-zhongyuzhuandayu:before {
+  content: "R";
+}
+.wi-dayuzhuanbaoyu:before {
+  content: "R";
+}
+.wi-baoyuzhuandabaoyu:before {
+  content: "R";
+}
+
+.wi-yujiaxue:before {
+  content: "U";
+}
+.wi-xiaoxue:before {
+  content: "V";
+}
+.wi-zhongxue:before {
+  content: "W";
+}
+.wi-daxue:before {
+  content: "W";
+}
+.wi-baoxue:before {
+  content: "W";
+}
+.wi-xiaoxuezhuanzhongxue:before {
+  content: "V";
+}
+

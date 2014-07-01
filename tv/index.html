@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/main.css">
+        <!-- <link rel="stylesheet/less" type="text/css" href="css/main.less" />
+        <script>less = {env: "development"};</script>
+        <script src="js/less.min.js"></script> -->
+    </head>
+    <body>
+        <div class="wrap">
+            <div class="background none"></div>
+
+            <div class="body">
+                <div class="logo"><img src="img/logo-ef-labs.png" alt="EF Learning Labs"></div>
+
+                <div class="time">
+                    <ul class="time-period">
+                        <li class="time-label 30-days">
+                            <h3>Last 30 days</h3>
+                            <h4 class="serif"></h4>
+                        </li>
+                        <li class="time-label yesterday">
+                            <h3>Yesterday</h3>
+                            <h4 class="serif"></h4>
+                        </li>
+                        <li class="time-label past-hour">
+                            <h3>Past hour</h3>
+                            <h4 class="serif"></h4>
+                        </li>
+                        <li class="time-label 5-min">
+                            <h3>Past 5 minutes</h3>
+                            <h4 class="serif"></h4>
+                        </li>
+                    </ul>
+                    <ul class="time-line">
+                        <li class="dot 30-days"></li>
+                        <li class="line"></li>
+                        <li class="dot yesterday"></li>
+                        <li class="line"></li>
+                        <li class="dot past-hour"></li>
+                        <li class="line"></li>
+                        <li class="dot 5-min"></li>
+                    </ul>
+                </div>
+
+                <div class="index-side">
+                    <div class="index-section">
+                        <div class="bd">
+                            <h3></h3>
+                            <h2></h2>
+                        </div>
+                    </div>
+                    <div class="happiness-index none">
+                        <div id="face-wrap">
+                            <div id="ring"></div>
+                            <div id="face">
+                                <div class="eyes cf">
+                                    <div class="eye left">
+                                        <div class="eye-light-1"></div>
+                                        <div class="eye-light-2"></div>
+                                    </div>
+                                    <div class="eye right">
+                                        <div class="eye-light-1"></div>
+                                        <div class="eye-light-2"></div>
+                                    </div>
+                                </div>
+                                <div id="mouth">
+                                    <div id="lips"></div>
+                                    <div id="slider"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <h2>HAPPINESS INDEX</h2> -->
+                    </div>
+                </div>
+                <div class="index-main">
+
+                    <div class="index-section cf" id="index-section-1">
+                        <div class="figure">
+                            <h3></h3>
+                            <div class="number">
+                                <h2></h2>
+                                <div class="trend"><div class="trend-arrow"></div></div>
+                            </div>
+                        </div>
+                        <div class="chart-wrap">
+                            <div class="chart">
+                                <canvas class="chart-canvas" id="chart-1" width="508" height="165"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="index-section cf" id="index-section-2">
+                        <div class="figure">
+                            <h3></h3>
+                            <div class="number">
+                                <h2></h2>
+                                <div class="trend"><div class="trend-arrow"></div></div>
+                            </div>
+                        </div>
+                        <div class="chart-wrap">
+                            <div class="chart">
+                                <canvas class="chart-canvas" id="chart-2" width="508" height="165"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="index-section cf" id="index-section-3">
+                        <div class="figure">
+                            <h3></h3>
+                            <div class="number">
+                                <h2></h2>
+                                <div class="trend"><div class="trend-arrow"></div></div>
+                            </div>
+                        </div>
+                        <div class="chart-wrap">
+                            <div class="chart">
+                                <canvas class="chart-canvas" id="chart-3" width="508" height="165"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="bottom loading">
+                    <div class="today">
+                        <h4 class="serif">today is <span class="day-today sans"></span></h4> 
+                        <h5 class="date-today"></h5>
+                    </div>
+                    <div class="weather none">
+                        <span class="weather-icon"><i></i></span>
+                        <span class="weather-temp"></span>
+                    </div>
+                    <div class="aqi none">
+                        <span id="aqi-value">AQI: <em></em></span><span id="aqi-health"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="js/underscore.js"></script>
+        <script src="js/two.js"></script>
+        <script src="js/site.js"></script>
+    </body>
+</html>
