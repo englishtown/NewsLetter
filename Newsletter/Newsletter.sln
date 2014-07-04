@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "News.Service", "Newsletter\News.Service.csproj", "{0BEBD5E4-19E3-4725-94A9-58646CC008BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "News.Interfaces", "News.Interfaces\News.Interfaces.csproj", "{D4DD9F11-E858-44C8-9603-8FE52E057FA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "News.Biz", "News.Biz\News.Biz.csproj", "{4F9FCB43-B64A-4B30-9DA2-8FF301EBB5D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BEBD5E4-19E3-4725-94A9-58646CC008BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BEBD5E4-19E3-4725-94A9-58646CC008BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BEBD5E4-19E3-4725-94A9-58646CC008BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BEBD5E4-19E3-4725-94A9-58646CC008BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4DD9F11-E858-44C8-9603-8FE52E057FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4DD9F11-E858-44C8-9603-8FE52E057FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4DD9F11-E858-44C8-9603-8FE52E057FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4DD9F11-E858-44C8-9603-8FE52E057FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F9FCB43-B64A-4B30-9DA2-8FF301EBB5D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F9FCB43-B64A-4B30-9DA2-8FF301EBB5D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F9FCB43-B64A-4B30-9DA2-8FF301EBB5D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F9FCB43-B64A-4B30-9DA2-8FF301EBB5D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

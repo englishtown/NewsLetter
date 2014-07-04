@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+		<title>Sequence Theme Demo - Sliding Horizontal Parallax</title>
+		<link rel="stylesheet" type="text/css" media="screen" href="css/sequencejs-theme.sliding-horizontal-parallax.css" />
+		<link href="http://fonts.googleapis.com/css?family=Play:400,700" rel="stylesheet" type="text/css">
+		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<script type="text/javascript">
+			function SetWindow(){
+				var temp ="<ul><li><img src=''/></li><li>''</li></ul>";
+				$.ajax({
+					url: "http://127.0.0.1:61665/newsletter",
+					dataType: "json",
+					contentType: "application/json",
+					success: function(data) {
+						alert(data);
+					}
+				});
+			}
+			window.setInterval("SetWindow()",1500);
+		</script>
+	</head>
+	<body>
+		<div id="sequence">
+		</div>
+	</body>
+</html>
