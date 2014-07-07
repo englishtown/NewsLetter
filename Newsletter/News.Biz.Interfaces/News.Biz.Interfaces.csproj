@@ -7,8 +7,8 @@
     <ProjectGuid>{D4DD9F11-E858-44C8-9603-8FE52E057FA6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>News.Interfaces</RootNamespace>
-    <AssemblyName>News.Interfaces</AssemblyName>
+    <RootNamespace>News.Biz</RootNamespace>
+    <AssemblyName>News.Biz.Interfaces</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

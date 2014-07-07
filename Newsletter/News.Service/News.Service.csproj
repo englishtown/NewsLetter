@@ -86,13 +86,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\News.Biz.Interfaces\News.Biz.Interfaces.csproj">
+      <Project>{D4DD9F11-E858-44C8-9603-8FE52E057FA6}</Project>
+      <Name>News.Biz.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\News.Biz\News.Biz.csproj">
       <Project>{4f9fcb43-b64a-4b30-9da2-8ff301ebb5d5}</Project>
       <Name>News.Biz</Name>
     </ProjectReference>
-    <ProjectReference Include="..\News.Interfaces\News.Interfaces.csproj">
-      <Project>{d4dd9f11-e858-44c8-9603-8fe52e057fa6}</Project>
-      <Name>News.Interfaces</Name>
+    <ProjectReference Include="..\News.Service.Model\News.Service.Model.csproj">
+      <Project>{47ABE109-597B-40B1-9864-8D4A328157AA}</Project>
+      <Name>News.Service.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

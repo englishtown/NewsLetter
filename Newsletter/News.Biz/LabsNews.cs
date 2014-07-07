@@ -1,8 +1,6 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Net;
 using HtmlAgilityPack;
-using News.Interfaces;
 using ServiceStack.Configuration;
 
 namespace News.Biz

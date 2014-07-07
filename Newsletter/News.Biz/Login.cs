@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using System.Net;
 using System.Text;
-using News.Interfaces;
 using ServiceStack.Configuration;
 
 namespace News.Biz

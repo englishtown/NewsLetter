@@ -1,24 +1,10 @@
 ﻿using System.Collections.Generic;
 using HtmlAgilityPack;
-using News.Interfaces;
-using ServiceStack;
+using News.Biz;
 
-namespace Newsletter
+namespace News.Service
 {
-    [Route("/newsletter")]
-    public class NewsLetter
-    {
-        public string Id { get; set; }
-    }
-
-    public class NewsLetterResponse
-    {
-        public string Id { get; set; }
-        public string PhotoAddress { get; set; }
-        public string Description { get; set; }
-    }
-
-    public class NewsLetterService : Service
+    public class NewsLetterService : ServiceStack.Service
     {
         private ILabsNews labsNews;
         public NewsLetterService(ILabsNews myLabsNews)

@@ -1,7 +1,5 @@
 ﻿using System;
 using News.Biz;
-using News.Interfaces;
-using Newsletter;
 using ServiceStack;
 
 namespace News.Service
