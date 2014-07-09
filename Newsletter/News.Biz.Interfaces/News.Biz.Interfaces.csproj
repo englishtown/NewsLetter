@@ -39,10 +39,17 @@
   <ItemGroup>
     <Compile Include="ILabsNews.cs" />
     <Compile Include="ILogin.cs" />
+    <Compile Include="INewsStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\News.Service.Model\News.Service.Model.csproj">
+      <Project>{47ABE109-597B-40B1-9864-8D4A328157AA}</Project>
+      <Name>News.Service.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

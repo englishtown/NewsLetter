@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="Contents\News.db" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -93,6 +94,14 @@
     <ProjectReference Include="..\News.Biz\News.Biz.csproj">
       <Project>{4f9fcb43-b64a-4b30-9da2-8ff301ebb5d5}</Project>
       <Name>News.Biz</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\News.DataAccess.Interfaces\News.DataAccess.Interfaces.csproj">
+      <Project>{9A82F22E-6308-405F-B560-23B3F931F08C}</Project>
+      <Name>News.DataAccess.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\News.DataAccess\News.DataAccess.csproj">
+      <Project>{E761B427-E7C5-4295-8B49-122C557D9AFE}</Project>
+      <Name>News.DataAccess</Name>
     </ProjectReference>
     <ProjectReference Include="..\News.Service.Model\News.Service.Model.csproj">
       <Project>{47ABE109-597B-40B1-9864-8D4A328157AA}</Project>

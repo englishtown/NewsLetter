@@ -46,12 +46,25 @@
   <ItemGroup>
     <Compile Include="LabsNews.cs" />
     <Compile Include="Login.cs" />
+    <Compile Include="NewsStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\News.Biz.Interfaces\News.Biz.Interfaces.csproj">
       <Project>{D4DD9F11-E858-44C8-9603-8FE52E057FA6}</Project>
       <Name>News.Biz.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\News.DataAccess.Interfaces\News.DataAccess.Interfaces.csproj">
+      <Project>{9A82F22E-6308-405F-B560-23B3F931F08C}</Project>
+      <Name>News.DataAccess.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\News.DataAccess.Model\News.DataAccess.Model.csproj">
+      <Project>{0D301584-0134-40DD-A2FA-81BAE1B2F35D}</Project>
+      <Name>News.DataAccess.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\News.Service.Model\News.Service.Model.csproj">
+      <Project>{47ABE109-597B-40B1-9864-8D4A328157AA}</Project>
+      <Name>News.Service.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

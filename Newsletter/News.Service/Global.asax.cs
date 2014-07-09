@@ -1,5 +1,6 @@
 ﻿using System;
 using News.Biz;
+using News.DataAccess;
 using ServiceStack;
 
 namespace News.Service
@@ -13,6 +14,8 @@ namespace News.Service
         {
             container.RegisterAutoWiredAs<Login, ILogin>();
             container.RegisterAutoWiredAs<LabsNews, ILabsNews>();
+            container.RegisterAutoWiredAs<NewsletterDal, INewsletterDal>();
+            container.RegisterAutoWiredAs<NewsStorage, INewsStorage>();
         }
     }
 
