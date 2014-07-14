@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using HtmlAgilityPack;
 using News.DataAccess;
 using News.Service;
@@ -18,13 +19,13 @@ namespace News.Biz
 
         public List<NewsLetterResponse> GetNewsLetter()
         {
-            List<NewsLetterResponse> responses = new List<NewsLetterResponse>();
-            List<Newsletter> newsletters = this.newsletterDal.GetAllList();
+            var responses = new List<NewsLetterResponse>();
+            var newsletters = this.newsletterDal.GetAllList();
             if (newsletters != null && newsletters.Count > 0)
             {
                 foreach (var newsletter in newsletters)
                 {
-                    NewsLetterResponse responseItem = new NewsLetterResponse();
+                    var responseItem = new NewsLetterResponse();
                     responseItem.Id = newsletter.Id.ToString();
                     responseItem.PhotoAddress = newsletter.Picture;
                     responseItem.Description = newsletter.Description;
@@ -60,7 +61,24 @@ namespace News.Biz
                 letter.Description = tdNode[1].InnerText;
                 letter.Picture = tdNode[2].FirstChild.GetAttributeValue("href", "");
 
-                this.newsletterDal.InsertNewsletter(letter);
+                int intState;
+                if (int.TryParse(tdNode[3].InnerText, out intState))
+                {
+                    letter.State = intState;
+                }
+
+                var dbLetter = this.newsletterDal.GetById(letter.Id);
+                if (dbLetter == null)
+                {
+                    this.newsletterDal.InsertNewsletter(letter);    
+                    continue;
+                }
+                
+                dbLetter.Description = letter.Description;
+                dbLetter.Picture = letter.Picture;
+                dbLetter.State = letter.State;
+                dbLetter.ModifyTime = DateTime.Now;
+                this.newsletterDal.UpdateNewsletter(dbLetter);
             }
         }
     }

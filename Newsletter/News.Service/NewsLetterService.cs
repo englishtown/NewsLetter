@@ -12,6 +12,9 @@ namespace News.Service
 
         public object Any(NewsLetter request)
         {
+            //1 update datas;
+            newsStorage.UpdateNews();
+            //2 get all datas;
             return newsStorage.GetNewsLetter();
         }
     }

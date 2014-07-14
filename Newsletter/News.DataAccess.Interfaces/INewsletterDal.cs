@@ -6,10 +6,10 @@ namespace News.DataAccess
     {
         int InsertNewsletter(Newsletter letter);
 
-        int DeleteNewsletter(Newsletter letter);
-
         int UpdateNewsletter(Newsletter letter);
 
         List<Newsletter> GetAllList();
+
+        Newsletter GetById(int id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using ServiceStack.OrmLite;
 
@@ -8,6 +9,10 @@ namespace News.DataAccess
     {
         public int InsertNewsletter(Newsletter letter)
         {
+            var currentDateTime = DateTime.Now;
+            letter.CreateTime = currentDateTime;
+            letter.ModifyTime = currentDateTime;
+
             int intResult = 0;
             using (IDbConnection db = Common.SqliteFile.OpenDbConnection())
             {
@@ -16,21 +21,31 @@ namespace News.DataAccess
             return intResult;
         }
 
-        public int DeleteNewsletter(Newsletter letter)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public int UpdateNewsletter(Newsletter letter)
         {
-            throw new System.NotImplementedException();
+            int intResult = 0;
+            using (IDbConnection db = Common.SqliteFile.OpenDbConnection())
+            {
+               intResult = db.Update(letter);
+            }
+            return intResult;
         }
 
         public List<Newsletter> GetAllList()
         {
             using (IDbConnection db = Common.SqliteFile.OpenDbConnection())
             {
-                return db.Select<Newsletter>();
+                string sql = "select * from Newsletter where State = 1";
+                return db.SqlList<Newsletter>(sql);
+            }
+        }
+
+        public Newsletter GetById(int id)
+        {
+            using (IDbConnection db = Common.SqliteFile.OpenDbConnection())
+            {
+
+                return db.SingleById<Newsletter>(id);
             }
         }
     }
