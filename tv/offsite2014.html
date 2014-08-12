@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript">
+        var config = {
+                "app": "TVChart"
+            };
+    </script>
+
+    <script type="text/javascript" src="bower_components/html5shiv/src/html5shiv.js"></script>
+    <script type="text/javascript" src="src/requirejs/config/main.js"></script>
+    <script type="text/javascript" src="bower_components/requirejs/require.js"></script>
+    <!--
+    <script type="text/javascript" src="js/offsite2014.js"></script>
+    -->
+
+    <script type="text/javascript">
+        require.s.contexts[config.context || '_'].nextTick = function (fn) { fn(); };
+        require.config({context: config.context || '_'})([config.app + "/project/offsite2014/page/index/main"]);
+        // require.s.contexts[config.context || '_'].nextTick = require.nextTick;
+    </script>
+</head>
+<body>
+
+    <div class="wrapper">
+        <div class="header-bar"></div>
+        <div class="new-comers"></div>
+        <div class="meet-our-people"></div>
+    </div>
+
+</body>
+</html>

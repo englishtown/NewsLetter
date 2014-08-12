@@ -1,0 +1,60 @@
+﻿.wrapper {
+    .headerbar-margin-top {
+        height: 12em;
+    }
+    .header-bar {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+        padding-top: 2em;
+        padding-left: 1em;
+        padding-bottom: 2em;
+        width: 70%;
+        .item {
+            position: relative;
+            width: 20%;
+            color:  #76756F;
+            text-align: center;
+            overflow: hidden;
+            .title {
+                font-family: Myriad Pro;
+                font-size: 1.2em;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+            .subtitle {
+                font-family: Georgia;
+                font-size: 1em;
+                font-style: italic;
+            }
+            .icon {
+                display: inline-block;
+                margin-top: 0.5em;
+                width: 1.4em;
+                height: 1.4em;
+                background: url(#cacheSvr#/_imgs/offsite2014/header-bar/icon.png) no-repeat center center;
+                background-size: contain;
+            }
+            .pre-line,
+            .next-line {
+                position: absolute;
+                bottom: 1em;
+                display: inline-block;
+                width: 50%;
+                height: 0.1em;
+                overflow: hidden;
+                background-color: #000;
+            }
+            .pre-line {
+                left: -0.7em;
+            }
+        }
+        .item.current {
+            color: #000;
+            .icon {
+                background-image: url(#cacheSvr#/_imgs/offsite2014/header-bar/icon-current.png);
+            }
+        }
+    }
+}

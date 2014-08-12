@@ -1,0 +1,19 @@
+.meet-our-people {
+  display: none;
+}
+.meet-our-people .left,
+.meet-our-people .right {
+  position: absolute;
+  height: 100%;
+}
+.meet-our-people .left {
+  left: 0;
+  bottom: 0;
+  width: 20%;
+  background-color: #fff;
+}
+.meet-our-people .right {
+  top: 0;
+  right: 0;
+  width: 80%;
+}

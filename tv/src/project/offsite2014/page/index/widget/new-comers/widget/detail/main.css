@@ -1,0 +1,43 @@
+.new-comers .detail {
+  padding: 3em 2em 1em 2em;
+  overflow: auto;
+}
+.new-comers .detail .header,
+.new-comers .detail .body {
+  display: none;
+}
+.new-comers .detail .header .pic {
+  width: 100%;
+}
+.new-comers .detail .header .info {
+  font-family: Georgia;
+  font-size: 1em;
+  font-style: italic;
+}
+.new-comers .detail .header .info .name {
+  font-family: Myriad Pro;
+  font-size: 3.6em;
+  font-weight: bold;
+}
+.new-comers .detail .body {
+  margin-top: 2.6em;
+}
+.new-comers .detail .body .desc {
+  font-family: Myriad Pro;
+  font-size: 1em;
+  line-height: 1.4em;
+}
+.new-comers .detail .body .touch {
+  margin-top: 2em;
+  line-height: 1.4em;
+  color: #45A39A;
+}
+.new-comers .detail .body .touch .touch-label {
+  font-weight: bold;
+}
+.new-comers .detail .body .touch .touch-mobile {
+  margin-top: 1.4em;
+}
+.new-comers .detail .body .touch .two-dimensional-code {
+  width: 100%;
+}
