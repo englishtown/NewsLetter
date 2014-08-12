@@ -1,0 +1,58 @@
+.wrapper .headerbar-margin-top {
+  height: 12em;
+}
+.wrapper .header-bar {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  padding-top: 2em;
+  padding-left: 1em;
+  padding-bottom: 2em;
+  width: 70%;
+}
+.wrapper .header-bar .item {
+  position: relative;
+  width: 20%;
+  color: #76756F;
+  text-align: center;
+  overflow: hidden;
+}
+.wrapper .header-bar .item .title {
+  font-family: Myriad Pro;
+  font-size: 1.2em;
+  font-weight: bold;
+  white-space: nowrap;
+}
+.wrapper .header-bar .item .subtitle {
+  font-family: Georgia;
+  font-size: 1em;
+  font-style: italic;
+}
+.wrapper .header-bar .item .icon {
+  display: inline-block;
+  margin-top: 0.5em;
+  width: 1.4em;
+  height: 1.4em;
+  background: url(#cacheSvr#/_imgs/offsite2014/header-bar/icon.png) no-repeat center center;
+  background-size: contain;
+}
+.wrapper .header-bar .item .pre-line,
+.wrapper .header-bar .item .next-line {
+  position: absolute;
+  bottom: 1em;
+  display: inline-block;
+  width: 50%;
+  height: 0.1em;
+  overflow: hidden;
+  background-color: #000;
+}
+.wrapper .header-bar .item .pre-line {
+  left: -0.7em;
+}
+.wrapper .header-bar .item.current {
+  color: #000;
+}
+.wrapper .header-bar .item.current .icon {
+  background-image: url(#cacheSvr#/_imgs/offsite2014/header-bar/icon-current.png);
+}

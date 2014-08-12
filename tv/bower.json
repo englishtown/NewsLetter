@@ -1,0 +1,12 @@
+{
+    "name": "TVChart",
+    "devDependencies": {
+        "requirejs": "~2.1.14",
+        "jquery": "^1.7.2",
+        "html5shiv": "3.6.2pre",
+        "poly": "dev",
+        "when": "*",
+        "angular": "*",
+        "salespages-ui-shared" : "https://stash.englishtown.com/scm/cosam/salespages-ui-shared.git#~0.2.0"
+    }
+}

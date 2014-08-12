@@ -1,0 +1,8 @@
+.new-comers .list {
+  padding: 0 1em 1em 1em;
+  overflow: auto;
+}
+.new-comers .list .item .pic {
+  margin: 10%;
+  width: 80%;
+}
