@@ -1,4 +1,5 @@
-﻿using News.Biz;
+﻿using System;
+using News.Biz;
 
 namespace News.Service
 {
@@ -12,8 +13,16 @@ namespace News.Service
 
         public object Any(NewsLetter request)
         {
-            //1 update datas;
-            newsStorage.UpdateNews();
+            try
+            {
+                //1 update datas;
+                newsStorage.UpdateNews();
+            }
+            catch (Exception)
+            {
+                //Write log...
+            }
+
             //2 get all datas;
             return newsStorage.GetNewsLetter();
         }

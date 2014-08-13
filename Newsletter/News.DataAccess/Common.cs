@@ -1,4 +1,4 @@
-﻿using ServiceStack.Configuration;
+﻿using System;
 using ServiceStack.OrmLite;
 using ServiceStack.OrmLite.Sqlite;
 
@@ -15,8 +15,9 @@ namespace News.DataAccess
         {
             get
             {
-                var appSettings = new AppSettings();
-                string newsUrl = appSettings.GetString("DBFile");
+                //var appSettings = new AppSettings();
+                //appSettings.GetString("DBFile");
+                string newsUrl = string.Concat(AppDomain.CurrentDomain.BaseDirectory, "\\Contents\\EFNews");
                 return newsUrl;
             }
         }

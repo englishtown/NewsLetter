@@ -26,13 +26,18 @@ namespace News.Biz
                 foreach (var newsletter in newsletters)
                 {
                     var responseItem = new NewsLetterResponse();
-                    responseItem.Id = newsletter.Id.ToString();
-                    responseItem.PhotoAddress = newsletter.Picture;
-                    responseItem.Description = newsletter.Description;
+                    responseItem.pic = newsletter.Pic;
+                    responseItem.label = newsletter.Label;
+                    responseItem.name = newsletter.Name;
+                    responseItem.position = newsletter.Position;
+                    responseItem.date = newsletter.Date;
+                    responseItem.desc = newsletter.Desc;
+                    responseItem.pic2 = newsletter.Pic2;
+                    responseItem.mobile = newsletter.Mobile;
+                    responseItem.skype = newsletter.Skype;
                     responses.Add(responseItem);
                 }
             }
-
             return responses;
         }
 
@@ -43,6 +48,7 @@ namespace News.Biz
             {
                 Newsletter letter = null;
                 var tdNode = trNode.ChildNodes;
+                //1 id
                 if (tdNode[0].Name == "td")
                 {
                     letter = new Newsletter();
@@ -58,14 +64,31 @@ namespace News.Biz
                     continue;
                 }
 
-                letter.Description = tdNode[1].InnerText;
-                letter.Picture = tdNode[2].FirstChild.GetAttributeValue("href", "");
-
+                //2 state
                 int intState;
-                if (int.TryParse(tdNode[3].InnerText, out intState))
+                if (int.TryParse(tdNode[1].InnerText, out intState))
                 {
                     letter.State = intState;
                 }
+
+                //3 pic
+                letter.Pic = tdNode[2].FirstChild.GetAttributeValue("href","");
+                //4 label
+                letter.Label = tdNode[3].InnerText;
+                //5 name
+                letter.Name = tdNode[4].InnerText;
+                //6 position
+                letter.Position = tdNode[5].InnerText;
+                //7 date
+                letter.Date = tdNode[6].InnerText;
+                //8 desc
+                letter.Desc = tdNode[7].InnerText;
+                //9 pic2
+                letter.Pic2 = tdNode[8].FirstChild.GetAttributeValue("href", "");
+                //10 mobile
+                letter.Mobile = tdNode[9].InnerText;
+                //11 skype
+                letter.Skype = tdNode[10].InnerText;
 
                 var dbLetter = this.newsletterDal.GetById(letter.Id);
                 if (dbLetter == null)
@@ -74,9 +97,16 @@ namespace News.Biz
                     continue;
                 }
                 
-                dbLetter.Description = letter.Description;
-                dbLetter.Picture = letter.Picture;
                 dbLetter.State = letter.State;
+                dbLetter.Pic = letter.Pic;
+                dbLetter.Label = letter.Label;
+                dbLetter.Name = letter.Name;
+                dbLetter.Position = letter.Position;
+                dbLetter.Date = letter.Date;
+                dbLetter.Desc = letter.Desc;
+                dbLetter.Pic2 = letter.Pic2;
+                dbLetter.Mobile = letter.Mobile;
+                dbLetter.Skype = letter.Skype;
                 dbLetter.ModifyTime = DateTime.Now;
                 this.newsletterDal.UpdateNewsletter(dbLetter);
             }
