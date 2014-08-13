@@ -28,17 +28,20 @@
     }
 
     function domReady($) {
-        var tabs = [
-                newcomers,
-                meetourpeople
-            ],
+        var tabs = [{
+                $container: $('.new-comers'),
+                tab: newcomers
+            },{
+                $container: $('.meet-our-people'),
+                tab: meetourpeople
+            }],
             span = 5000,
             iCurrentTab = 0;
 
         function switchTab() {
-            var tabCurrent = tabs[iCurrentTab],
+            var tabCurrent = tabs[iCurrentTab].tab,
                 iNext = (iCurrentTab + 1) > (tabs.length - 1) ? 0 : (iCurrentTab + 1),
-                tabNext = tabs[iNext];
+                tabNext = tabs[iNext].tab;
 
             if ((iCurrentTab != iNext) && tabCurrent.close && tabNext.open) {
                 tabCurrent.close().then(function () {
@@ -52,27 +55,18 @@
         if (tabs.length) {
             var dataHeaderBar = [];
             for (var i = 0, iLen = tabs.length; i < iLen; i++) {
-                dataHeaderBar.push(tabs[i].headerbar);
+                dataHeaderBar.push(tabs[i].tab.headerbar);
             }
             headerbar($('.header-bar'), dataHeaderBar).then(function () {
-                if (tabs[0].isInit) {
+                if (tabs[0].tab.isInit) {
                     headerbar.switch(iCurrentTab);
                 }
             });
         }
 
         for (var j = 0, jLen = tabs.length; j < jLen; j++) {
-            var tab = tabs[j],
-                $container;
-
-            switch (tab.name) {
-                case 'newcomers':
-                    $container = $('.new-comers');
-                    break;
-                case 'meetourpeople':
-                    $container = $('.meet-our-people');
-                    break;
-            }
+            var tab = tabs[j].tab,
+                $container = tabs[j].$container;
 
             tab.config({
                 container: $container,

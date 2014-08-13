@@ -6,8 +6,8 @@
     when
 ) {
     var urls = {
-            'header-bar': '/src/project/offsite2014/page/index/widget/header-bar/data.js',
-            'new-comers': '/src/project/offsite2014/page/index/widget/new-comers/widget/list/data.js'
+            // 'header-bar': './src/project/offsite2014/page/index/widget/header-bar/data.js',
+            'new-comers': './src/project/offsite2014/page/index/widget/new-comers/widget/list/data.js'
         };
 
     return function (name) {
