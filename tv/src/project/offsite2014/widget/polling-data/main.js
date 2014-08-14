@@ -8,7 +8,6 @@
     var data = {},
         fnCallback = {},
         span = 3000,
-        isInit = {},
         timer = {};
 
     function polling(name) {
@@ -20,17 +19,6 @@
                         fnCallback[name].fnResolve[i](data);
                     }
                 }
-                if (fnCallback[name] && fnCallback[name].fnResolveAppend && (fnCallback[name].fnResolveAppend instanceof Array)) {
-                    fnCallback[name].fnResolveAppend = [];
-                }
-            }
-            else {
-                if (fnCallback[name] && fnCallback[name].fnResolveAppend && (fnCallback[name].fnResolveAppend instanceof Array)) {
-                    for (var i = 0, len = fnCallback[name].fnResolveAppend.length; i < len; i++) {
-                        fnCallback[name].fnResolveAppend[i](data);
-                    }
-                    fnCallback[name].fnResolveAppend = [];
-                }
             }
             if (fnCallback[name] && fnCallback[name].fnResolve && fnCallback[name].fnResolve.length) {
                 timer[name] = setTimeout(function () {
@@ -40,7 +28,6 @@
             else if (timer[name]) {
                 clearTimeout(timer[name]);
                 delete timer[name];
-                delete isInit[name];
             }
         });
     }
@@ -62,33 +49,27 @@
             }
             if (iFlg) {
                 fnCallback[name].fnResolve.push(fnResolve);
-                fnCallback[name].fnResolveAppend.push(fnResolve);
+
+                if (fnCallback[name].fnResolve.length == 1) {
+                    setTimeout(function () {
+                        polling(name);
+                    }, 0);
+                }
+                if (data[name]) {
+                    fnResolve(data);
+                }
             }
         }
 
-        if (!isInit[name]) {
-            isInit[name] = true;
-
-            setTimeout(function () {
-                polling(name);
-            }, 0);
-        }
     }
 
     function off(name, fnResolve) {
-        if (isInit[name] && fnResolve && fnCallback[name] && fnCallback[name].fnResolve && fnCallback[name].fnResolve.length) {
-            var iFlg = -1,
-                jFlg = -1;
+        if (fnResolve && fnCallback[name] && fnCallback[name].fnResolve && fnCallback[name].fnResolve.length) {
+            var iFlg = -1;
 
             for (var i = 0, iLen = fnCallback[name].fnResolve.length; i < iLen; i++) {
                 if (fnCallback[name].fnResolve[i] == fnResolve) {
                     iFlg = i;
-                    break;
-                }
-            }
-            for (var j = 0, jLen = fnCallback[name].fnResolveAppend.length; j < jLen; j++) {
-                if (fnCallback[name].fnResolveAppend[j] == fnResolve) {
-                    jFlg = j;
                     break;
                 }
             }
@@ -101,11 +82,7 @@
                         clearTimeout(timer[name]);
                         delete timer[name];
                     }
-                    delete isInit[name];
                 }
-            }
-            if (jFlg > -1) {
-                fnCallback[name].fnResolveAppend.splice(jFlg, 1);
             }
         }
     }

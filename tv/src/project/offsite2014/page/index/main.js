@@ -35,6 +35,7 @@
                 $container: $('.meet-our-people'),
                 tab: meetourpeople
             }],
+            isHeaderBarInit = false,
             isFirstTabInit = false,
             span = 5000,
             iCurrentTab = 0;
@@ -68,6 +69,7 @@
                 dataHeaderBar.push(tabs[i].tab.headerbar);
             }
             headerbar.init($('.header-bar'), dataHeaderBar).then(function () {
+                isHeaderBarInit = true;
                 if (isFirstTabInit) {
                     headerbar.switchTab(iCurrentTab);
                 }
@@ -85,7 +87,7 @@
             if (j === 0) {
                 tab.show($container, switchTab).then(function () {
                     isFirstTabInit = true;
-                    if (headerbar.isInit) {
+                    if (isHeaderBarInit) {
                         headerbar.switchTab(iCurrentTab);
                     }
                     tabs[iCurrentTab].$container.fadeIn();

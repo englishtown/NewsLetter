@@ -34,7 +34,7 @@
   margin-top: 0.5em;
   width: 1.4em;
   height: 1.4em;
-  background: url(#cacheSvr#/_imgs/offsite2014/header-bar/icon.png) no-repeat center center;
+  background: url(../../../../../../../_imgs/offsite2014/header-bar/icon.png) no-repeat center center;
   background-size: contain;
 }
 .wrapper .header-bar .item .pre-line,
@@ -54,5 +54,5 @@
   color: #000;
 }
 .wrapper .header-bar .item.current .icon {
-  background-image: url(#cacheSvr#/_imgs/offsite2014/header-bar/icon-current.png);
+  background-image: url(../../../../../../../_imgs/offsite2014/header-bar/icon-current.png);
 }

@@ -20,11 +20,14 @@
         }
 
         $.ajax({
-            dataType: 'json',
+            dataType: 'jsonp',
+            jsonpCallback: 'jQuery123456',
             type: 'get',
             url: urls[name]
         }).then(function (dataJSON, status, xhr) {
-            defer.resolve(dataJSON);
+            var data = {};
+            data[name] = dataJSON;
+            defer.resolve(data);
         }, function () {
             defer.reject();
         });
