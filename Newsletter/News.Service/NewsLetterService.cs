@@ -18,9 +18,10 @@ namespace News.Service
                 //1 update datas;
                 newsStorage.UpdateNews();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //Write log...
+                newsStorage.LogError(request.Id,ex);
             }
 
             //2 get all datas;

@@ -111,5 +111,14 @@ namespace News.Biz
                 this.newsletterDal.UpdateNewsletter(dbLetter);
             }
         }
+
+        public void LogError(string input,Exception ex)
+        {
+            var log = new Log();
+            log.Input = input??"";
+            log.Message = string.Format("Message:{0} Stack:{1}", ex.Message, ex.StackTrace);
+            log.CreateTime = DateTime.Now;
+            newsletterDal.AddLog(log);
+        }
     }
 }

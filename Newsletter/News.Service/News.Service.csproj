@@ -78,7 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="Contents\News.db" />
+    <Content Include="Contents\EFNews" />
+    <None Include="Properties\PublishProfiles\ll.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

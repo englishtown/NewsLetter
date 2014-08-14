@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using News.Service;
 
 namespace News.Biz
@@ -7,5 +8,6 @@ namespace News.Biz
     {
         List<NewsLetterResponse> GetNewsLetter();
         void UpdateNews();
+        void LogError(string input,Exception ex);
     }
 }

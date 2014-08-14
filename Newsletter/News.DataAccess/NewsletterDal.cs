@@ -26,7 +26,7 @@ namespace News.DataAccess
             int intResult = 0;
             using (IDbConnection db = Common.SqliteFile.OpenDbConnection())
             {
-               intResult = db.Update(letter);
+                intResult = db.Update(letter);
             }
             return intResult;
         }
@@ -47,6 +47,16 @@ namespace News.DataAccess
 
                 return db.SingleById<Newsletter>(id);
             }
+        }
+
+        public int AddLog(Log log)
+        {
+            int intResult = 0;
+            using (IDbConnection db = Common.SqliteFile.OpenDbConnection())
+            {
+                intResult = (int)db.Insert(log);
+            }
+            return intResult;
         }
     }
 }

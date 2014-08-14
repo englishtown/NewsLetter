@@ -11,5 +11,7 @@ namespace News.DataAccess
         List<Newsletter> GetAllList();
 
         Newsletter GetById(int id);
+
+        int AddLog(Log log);
     }
 }
