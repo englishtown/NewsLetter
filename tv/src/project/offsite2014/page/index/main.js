@@ -35,19 +35,29 @@
                 $container: $('.meet-our-people'),
                 tab: meetourpeople
             }],
+            isFirstTabInit = false,
             span = 5000,
             iCurrentTab = 0;
 
         function switchTab() {
             var tabCurrent = tabs[iCurrentTab].tab,
+                $containerCurrent = tabs[iCurrentTab].$container,
                 iNext = (iCurrentTab + 1) > (tabs.length - 1) ? 0 : (iCurrentTab + 1),
-                tabNext = tabs[iNext].tab;
+                tabNext = tabs[iNext].tab,
+                $containerNext = tabs[iNext].$container;
 
-            if ((iCurrentTab != iNext) && tabCurrent.close && tabNext.open) {
-                tabCurrent.close().then(function () {
-                    iCurrentTab = iNext;
-                    headerbar.switch(iCurrentTab);
-                    tabNext.open();
+            if ((iCurrentTab != iNext) && tabCurrent.hide && tabNext.show) {
+                tabCurrent.hide().then(function () {
+                    $containerCurrent.fadeOut(function () {
+                        $containerCurrent
+                            .hide()
+                            .empty();
+                        iCurrentTab = iNext;
+                        headerbar.switchTab(iCurrentTab);
+                        tabNext.show($containerNext, switchTab).then(function () {
+                            $containerNext.fadeIn();
+                        });
+                    });
                 });
             }
         }
@@ -57,9 +67,9 @@
             for (var i = 0, iLen = tabs.length; i < iLen; i++) {
                 dataHeaderBar.push(tabs[i].tab.headerbar);
             }
-            headerbar($('.header-bar'), dataHeaderBar).then(function () {
-                if (tabs[0].tab.isInit) {
-                    headerbar.switch(iCurrentTab);
+            headerbar.init($('.header-bar'), dataHeaderBar).then(function () {
+                if (isFirstTabInit) {
+                    headerbar.switchTab(iCurrentTab);
                 }
             });
         }
@@ -69,21 +79,17 @@
                 $container = tabs[j].$container;
 
             tab.config({
-                container: $container,
-                span: span,
-                end: switchTab
+                span: span
             });
 
             if (j === 0) {
-                tab.init().then(function (tab) {
+                tab.show($container, switchTab).then(function () {
+                    isFirstTabInit = true;
                     if (headerbar.isInit) {
-                        headerbar.switch(iCurrentTab);
+                        headerbar.switchTab(iCurrentTab);
                     }
-                    tab.open();
+                    tabs[iCurrentTab].$container.fadeIn();
                 });
-            }
-            else {
-                tab.init();
             }
         }
     }

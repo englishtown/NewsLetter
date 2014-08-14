@@ -18,6 +18,16 @@
     <script type="text/javascript" src="js/offsite2014.js"></script>
 
     <script type="text/javascript">
+        require.config({
+            context: config.context || '_',
+            config: {
+                "TVChart/project/offsite2014/widget/get-data/main" : {
+                    "handler": {
+                        // "new-comers": "http://10.128.34.240:8099/newsletter"
+                    }
+                }
+            }
+        });
         require.s.contexts[config.context || '_'].nextTick = function (fn) { fn(); };
         require.config({context: config.context || '_'})([config.app + "/project/offsite2014/page/index/main"]);
         // require.s.contexts[config.context || '_'].nextTick = require.nextTick;

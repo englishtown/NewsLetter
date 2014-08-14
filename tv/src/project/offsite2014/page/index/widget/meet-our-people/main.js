@@ -19,181 +19,152 @@
     list,
     detail
 ) {
-    var $container,
-        spanSwtich = 3000,
-        fnEnd;
+    var $template = $(innerHTML),
+        deferCssReady = when.defer(),
+        deferDomReady = when.defer(),
+        span = 3000,
+        $container,
+        callbackData,
+        dataMeetOurPeople,
+        indexCurrent = 0,
+        timer;
 
-    var isCssReady = false,
-        isPendingInit = false,
-        isInitializing = false,
-        deferInit = when.defer(),
-        $template = $(innerHTML),
-        dataMeetOurPeople;
+    cssRender(cssTxt).then(function () {
+        deferCssReady.resolve();
+    });
+    $(function () {
+        deferDomReady.resolve();
+    });
 
-    var isListFilled = false,
-        $list,
-        $detail,
-        $items,
-        iCurrent = -1,
-        timer = {
-            meetourpeople: {
-                detail: undefined
+    function config(pConfig) {
+        if (pConfig) {
+            if (pConfig.span) {
+                span = pConfig.span;
             }
-        };
-
-    cssRender(cssTxt).then(cssReady);
-    function cssReady() {
-        isCssReady = true;
-        if (isPendingInit && $.isReady) {
-            isPendingInit = false;
-            init();
         }
     }
 
-    function init() {
-        isInitializing = true;
+    function show(container, end) {
+        var deferShow = when.defer();
+        if ($container && $container.length) {
+            if (container) {
+                deferShow.reject();
+                return deferShow.promise;
+            }
+        } else if (!container || !$(container).length) {
+            deferShow.reject();
+            return deferShow.promise;
+        } else {
+            $container = $(container);
+        }
 
-        pollingData.on('new-comers', function (data) {
-            dataMeetOurPeople = data['new-comers'];
+        if (!$container.children().length) {
+            var $item = $template.clone(),
+                $list = $item.filter('.list'),
+                $detail = $item.filter('.detail');
 
-            if (meetourpeople.isAvailable) {
-                if (!isListFilled) {
-                    fillList().then(function () {
-                        $container.show();
-                        if (isInitializing) {
-                            isInitializing = false;
-                            deferInit.resolve();
+            $container.append($item);
+
+            list.init($list).then(function () {
+                var isInit = {
+                        list: false,
+                        detail: false,
+                    };
+                callbackData = function(data) {
+                    dataMeetOurPeople = data['new-comers'];
+                    list.update(dataMeetOurPeople).then(function () {
+                        if (!isInit.list) {
+                            if (!isInit.detail && dataMeetOurPeople.length > indexCurrent) {
+                                detail.show($detail, dataMeetOurPeople[indexCurrent]).then(function () {
+                                    isInit.detail = true;
+                                    if (!isInit.list) {
+                                        // $container.fadeIn(function () {
+                                            isInit.list = true;
+                                            switchDetail($detail, end);
+                                            deferShow.resolve();
+                                        // });
+                                    }
+                                });
+                            } else {
+                                // $container.fadeIn(function () {
+                                    isInit.list = true;
+                                    deferShow.resolve();
+                                // });
+                            }
                         }
                     });
-                } else {
-                    list.update(window.angular.copy(dataMeetOurPeople));
-                }
-            }
-            else if (isInitializing) {
-                isInitializing = false;
-                deferInit.resolve(meetourpeople);
-            }
-        });
+                };
+                pollingData.on('new-comers', callbackData);
+                $(window).on('resize', onResize);
+                onResize();
+            });
+        }
+
+        return deferShow.promise;
     }
 
-    function fillList() {
-        var deferFillList = when.defer();
-        (!meetourpeople.isInit ? list($list, window.angular.copy(dataMeetOurPeople)) : list.init($list)).then(function () {
-            $items = $list.find('.item');
-            if ($items.length) {
-                iCurrent = 0;
-                (!meetourpeople.isInit ? detail($detail, dataMeetOurPeople[iCurrent]) : detail.init($detail, dataMeetOurPeople[iCurrent])).then(function () {
-                    timer.meetourpeople.detail = setInterval(function () {
-                        if (!dataMeetOurPeople.length) {
-                            iCurrent = -1;
-                            return;
-                        }
-                        else {
-                            iCurrent++;
-                            if (dataMeetOurPeople.length > iCurrent) {
-                                meetourpeople.isAnimation = true;
-                                detail.update(dataMeetOurPeople[iCurrent]).then(function () {
-                                    meetourpeople.isAnimation = false;
-                                });
-                            }
-                            else {
-                                if (typeof(fnEnd) == 'function') {
-                                    fnEnd();
-                                }
-                            }
-                        }
-                    }, spanSwtich);
+    function switchDetail($detail, end) {
+        timer = setTimeout(function () {
+            if (dataMeetOurPeople.length > (indexCurrent + 1)) {
+                detail.show($detail, dataMeetOurPeople[++indexCurrent]).then(function () {
+                    switchDetail($detail, end);
                 });
             }
-            isListFilled = true;
-            meetourpeople.isAvailable = true;
-            meetourpeople.isInit = true;
-            deferFillList.resolve();
-        });
-
-        return deferFillList.promise;
+            else if (typeof(end) == 'function') {
+                end();
+            }
+        }, span);
     }
 
-
-    function meetourpeople() {}
-
-    meetourpeople.headerbar = {
-        title: 'MEET OUR PEOPLE',
-        subtitle: '-'
-    };
-    meetourpeople.isInit = false;
-    meetourpeople.isAnimation = false;
-
-    meetourpeople.config = function (objConfig) {
-        if (objConfig) {
-            if (objConfig.container && $(objConfig.container).length) {
-                $container =  $(objConfig.container);
-            }
-            if (objConfig.span) {
-                spanSwtich = objConfig.span;
-            }
-            if (objConfig.end) {
-                fnEnd = objConfig.end;
-            }
+    function onResize() {
+        var $wrapper = $('.wrapper'),
+            $headerbar = $('.header-bar'),
+            $list = ($container && $container.length) ? $container.find('> .list') : undefined;
+        if ($wrapper.length && $headerbar.length && $list && $list.length) {
+            $list.css(
+                'height',
+                $wrapper.height() - (
+                    (parseInt($headerbar.css('margin-top')) || 0)
+                    + (parseInt($headerbar.css('border-top')) || 0)
+                    + (parseInt($headerbar.css('padding-top')) || 0)
+                    + $headerbar.height()
+                    + (parseInt($headerbar.css('padding-bottom')) || 0)
+                    + (parseInt($headerbar.css('border-bottom')) || 0)
+                    + (parseInt($headerbar.css('margin-bottom')) || 0)
+                )
+            );
         }
-    };
+    }
 
-    meetourpeople.init = function () {
-        if (!$container || !$container.length || isPendingInit || isInitializing || meetourpeople.isInit) {
-            var deferReject = when.defer();
-            deferReject.reject();
-            return deferReject.promise;
-        }
-        isPendingInit = true;
-        $(function ($) {
-            if (isPendingInit && isCssReady) {
-                isPendingInit = false;
-                init();
+    function hide() {
+        var deferHide = when.defer();
+        if (!$container || !$container.length) {
+            deferHide.reject();
+        } else {
+            $(window).off('resize', onResize);
+            pollingData.off('new-comers', callbackData);
+            callbackData = undefined;
+            if (timer) {
+                clearTimeout(timer);
+                timer = undefined;
             }
-        });
-        return deferInit.promise;
-    };
-
-    meetourpeople.open = function () {
-        var deferOpen = when.defer(),
-            $templateClone = $template.clone();
-
-        $list = $templateClone.filter('.list');
-        $detail = $templateClone.filter('.detail');
-
-        $container.append($templateClone);
-        fillList().then(function () {
-            $container.fadeIn(function () {
-                deferOpen.resolve();
-            });
-        });
-
-        return deferOpen.promise;
-    };
-
-    meetourpeople.close = function () {
-        var deferClose = when.defer();
-
-        meetourpeople.isAvailable = false;
-
-        if (timer.meetourpeople.detail) {
-            clearInterval(timer.meetourpeople.detail);
-            timer.meetourpeople.detail = undefined;
+            indexCurrent = 0;
+            dataMeetOurPeople = undefined;
+            // $container.fadeOut(function () {
+                $container = undefined;
+                deferHide.resolve();
+            // });
         }
-        $container.fadeOut(function () {
-            $container.hide();
-            list.destroy();
-            detail.destory();
-            isListFilled = false;
-            $list = undefined;
-            $detail = undefined;
-            $items = undefined;
-            iCurrent = -1;
-            deferClose.resolve();
-        });
+        return deferHide.promise;
+    }
 
-        return deferClose.promise;
-    };
-
-    return meetourpeople;
+    return new (function () {
+        this.headerbar = {
+            title: 'MEET OUR PEOPLE',
+            subtitle: '-'
+        };
+        this.config = config;
+        this.show = show;
+        this.hide = hide;
+    })();
 });

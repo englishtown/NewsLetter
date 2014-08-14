@@ -4,7 +4,7 @@
     'csstemplate!./main.css',
     'cssrender',
     'when',
-    '../../../../../../widget/replace-engine/main'
+    '../../../../../../widget/template-engine/main'
 ], function (
     $,
     innerHTML,
@@ -13,106 +13,66 @@
     when,
     templateEngine
 ) {
-    var defer = when.defer(),
-        isCssReady = false,
-        fnMain,
-        $container,
-        $template = $(innerHTML),
-        $row,
+    var $template = $(innerHTML),
         $itemTemplate = $template.find('> .item').clone(),
-        dataNewComers,
-        isInit = false;
+        deferCssReady = when.defer(),
+        deferDomReady = when.defer(),
+        $container;
 
-    cssRender(cssTxt).then(cssReady);
+    cssRender(cssTxt).then(function () {
+        deferCssReady.resolve();
+    });
+    $(function () {
+        deferDomReady.resolve();
+    });
 
-    function cssReady() {
-        isCssReady = true;
-        if (!fnMain) {
-            fnMain();
-        }
-    }
-
-    function domReady($) {
-        list.init().then(function () {
-            if (!isInit) {
-                isInit = true;
-                defer.resolve();
-            }
-        });
-    }
-
-    function onResize() {
-        var $wrapper = $('.wrapper'),
-            $headerbar = $('.header-bar');
-        if ($headerbar && $headerbar.length) {
-            $container.css('height', $wrapper.height() - ($headerbar.height() + parseInt($headerbar.css('margin-top')) + parseInt($headerbar.css('margin-bottom')) + parseInt($headerbar.css('padding-top')) + parseInt($headerbar.css('padding-bottom'))));
-        }
-    }
-
-    function list(container, data) {
-        if (!$container && $(container).length) {
-            $container = $(container);
-        }
-        if ($container.length && !fnMain) {
-            dataNewComers = data || [];
-            fnMain = function () {
-                $(domReady);
-            };
-            if (isCssReady) {
-                fnMain();
-            }
-        }
-        else {
-            defer.reject();
-        }
-        return defer.promise;
-    }
-
-    list.init = function (container) {
+    function init(container) {
         var deferInit = when.defer();
-
-        if ($(container).length) {
+        when.all([
+            deferCssReady.promise,
+            deferDomReady.promise
+        ]).then(function () {
             $container = $(container);
+            if (!$container.length) {
+                deferInit.reject();
+                return;
+            }
+
+            if (!$container.children().length) {
+                $container.append(
+                    $template.clone().empty()
+                );
+            }
+
+            deferInit.resolve();
+        });
+        return deferInit.promise;
+    }
+
+    function update(data) {
+        var deferUpdate = when.defer(),
+            $row = ($container && $container.length) ? $container.find('> .row') : undefined;
+
+        if (!$row || !$row.length || !data) {
+            deferShow.reject();
+            return deferUpdate.promise;
         }
 
-        $row = $template.clone().empty();
-
-        for (var i = 0, len = dataNewComers.length; i < len; i++) {
+        if ($row.children().length) {
+            $row.empty();
+        }
+        for (var i = 0, len = data.length; i < len; i++) {
             var $item = $itemTemplate.clone();
-                dataItem = dataNewComers[i];
+                dataItem = data[i];
             templateEngine($item, dataItem);
             $row.append($item);
+            deferUpdate.resolve();
         }
+        return deferUpdate.promise;
+    }
 
-        $(window).on('resize', onResize);
-        onResize();
-        $container.append($row);
-
-        deferInit.resolve();
-
-        return deferInit.promise;
-    };
-
-    list.destroy = function () {
-        $(window).off('resize', onResize);
-        $container.remove();
-    };
-
-    list.update = function (data) {
-        if (!data) {
-            return;
-        }
-        dataNewComers = data;
-        if (isInit) {
-            $row.empty();
-            for (var i = 0, len = dataNewComers.length; i < len; i++) {
-                var $item = $itemTemplate.clone();
-                    dataItem = dataNewComers[i];
-                $item.find('.pic').prop('src', dataItem.pic);
-                $row.append($item);
-            }
-        }
-    };
-
-    return list;
+    return new (function() {
+        this.init = init;
+        this.update = update;
+    })();
 });

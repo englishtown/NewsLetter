@@ -20,6 +20,17 @@
                         fnCallback[name].fnResolve[i](data);
                     }
                 }
+                if (fnCallback[name] && fnCallback[name].fnResolveAppend && (fnCallback[name].fnResolveAppend instanceof Array)) {
+                    fnCallback[name].fnResolveAppend = [];
+                }
+            }
+            else {
+                if (fnCallback[name] && fnCallback[name].fnResolveAppend && (fnCallback[name].fnResolveAppend instanceof Array)) {
+                    for (var i = 0, len = fnCallback[name].fnResolveAppend.length; i < len; i++) {
+                        fnCallback[name].fnResolveAppend[i](data);
+                    }
+                    fnCallback[name].fnResolveAppend = [];
+                }
             }
             if (fnCallback[name] && fnCallback[name].fnResolve && fnCallback[name].fnResolve.length) {
                 timer[name] = setTimeout(function () {
@@ -34,56 +45,11 @@
         });
     }
 
-    // function pollingData(name) {
-    //     if (!isInit[name]) {
-    //         isInit[name] = true;
-    //         setTimeout(function () {
-    //             polling(name);
-    //         }, 0);
-    //     }
-    //     return {
-    //         then: function (fnResolve, fnReject) {
-    //             if (!fnCallback[name]) {
-    //                 fnCallback[name] = {
-    //                     fnResolve: [],
-    //                     fnReject: []
-    //                 };
-    //             }
-    //             if (fnResolve) {
-    //                 var iFlg = true;
-    //                 for (var i = 0, iLen = fnCallback[name].length; i < iLen; i++) {
-    //                     if (fnCallback[name].fnResolve[i] == fnResolve) {
-    //                         iFlg = false;
-    //                         break;
-    //                     }
-    //                 }
-    //                 if (iFlg) {
-    //                     fnCallback[name].fnResolve.push(fnResolve);
-    //                 }
-    //             }
-    //             if (fnReject) {
-    //                 var jFlg = true;
-    //                 for (var j = 0, jLen = fnCallback[name].length; j < iLen; j++) {
-    //                     if (fnCallback[name].fnReject[j] == fnReject) {
-    //                         jFlg = false;
-    //                         break;
-    //                     }
-    //                 }
-    //                 if (jFlg) {
-    //                     fnCallback[name].fnReject.push(fnReject);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    function pollingData() {}
-
-    pollingData.on = function (name, fnResolve) {
+    function on(name, fnResolve) {
         if (!fnCallback[name]) {
             fnCallback[name] = {
                 fnResolve: [],
-                fnReject: []
+                fnResolveAppend: []
             };
         }
         if (fnResolve) {
@@ -96,6 +62,7 @@
             }
             if (iFlg) {
                 fnCallback[name].fnResolve.push(fnResolve);
+                fnCallback[name].fnResolveAppend.push(fnResolve);
             }
         }
 
@@ -106,17 +73,26 @@
                 polling(name);
             }, 0);
         }
-    };
+    }
 
-    pollingData.off = function (name, fnResolve) {
+    function off(name, fnResolve) {
         if (isInit[name] && fnResolve && fnCallback[name] && fnCallback[name].fnResolve && fnCallback[name].fnResolve.length) {
-            var iFlg = -1;
-            for (var i = 0, iLen = fnCallback[name].length; i < iLen; i++) {
+            var iFlg = -1,
+                jFlg = -1;
+
+            for (var i = 0, iLen = fnCallback[name].fnResolve.length; i < iLen; i++) {
                 if (fnCallback[name].fnResolve[i] == fnResolve) {
                     iFlg = i;
                     break;
                 }
             }
+            for (var j = 0, jLen = fnCallback[name].fnResolveAppend.length; j < jLen; j++) {
+                if (fnCallback[name].fnResolveAppend[j] == fnResolve) {
+                    jFlg = j;
+                    break;
+                }
+            }
+
             if (iFlg > -1) {
                 fnCallback[name].fnResolve.splice(iFlg, 1);
 
@@ -128,8 +104,14 @@
                     delete isInit[name];
                 }
             }
+            if (jFlg > -1) {
+                fnCallback[name].fnResolveAppend.splice(jFlg, 1);
+            }
         }
-    };
+    }
 
-    return pollingData;
+    return new (function () {
+        this.on = on;
+        this.off = off;
+    })();
 });

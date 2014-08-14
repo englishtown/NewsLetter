@@ -1,17 +1,24 @@
 ﻿define([
+    'module',
     'jquery',
     'when'
 ], function (
+    module,
     $,
     when
 ) {
     var urls = {
-            // 'header-bar': './src/project/offsite2014/page/index/widget/header-bar/data.js',
             'new-comers': './src/project/offsite2014/page/index/widget/new-comers/widget/list/data.js'
         };
 
     return function (name) {
-        var defer = when.defer();
+        var defer = when.defer(),
+            config = module.config();
+
+        if (config.handler && config.handler[name]) {
+            urls[name] = config.handler[name];
+        }
+
         $.ajax({
             dataType: 'json',
             type: 'get',
