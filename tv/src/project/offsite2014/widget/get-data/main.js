@@ -21,7 +21,7 @@
 
         $.ajax({
             dataType: 'jsonp',
-            jsonpCallback: 'jQuery123456',
+            // jsonpCallback: 'jQuery123456',
             type: 'get',
             url: urls[name]
         }).then(function (dataJSON, status, xhr) {
