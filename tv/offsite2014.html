@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="text/javascript">
         var config = {
-                "app": "TVChart"
+                "app": "TVChart",
+                "singleCacheSvr": "."
             };
     </script>
 
@@ -18,19 +19,25 @@
     <script type="text/javascript" src="js/offsite2014.js"></script>
 
     <script type="text/javascript">
-        require.config({
-            context: config.context || '_',
-            config: {
-                "TVChart/project/offsite2014/widget/get-data/main" : {
-                    "handler": {
-                        "new-comers": "http://10.128.34.240:8099/newsletter"
-                    }
+        (function () {
+            var configRequire = {};
+            configRequire[config.app + '/project/offsite2014/widget/get-data/main'] = {
+                handler: {
+                    "new-comers": "http://10.128.34.240:8099/newsletter"
                 }
-            }
-        });
+            };
+            configRequire[config.app + '/project/offsite2014/page/index/main'] = {
+                span: 5000
+            };
+            require.config({
+                context: config.context || '_',
+                config: configRequire
+            });
+        })();
+    </script>
+    <script type="text/javascript">
         require.s.contexts[config.context || '_'].nextTick = function (fn) { fn(); };
         require.config({context: config.context || '_'})([config.app + "/project/offsite2014/page/index/main"]);
-        // require.s.contexts[config.context || '_'].nextTick = require.nextTick;
     </script>
 </head>
 <body>

@@ -105,13 +105,56 @@
 
     function switchDetail($detail, end) {
         timer = setTimeout(function () {
-            if (dataNewComers.length > (indexCurrent + 1)) {
-                detail.show($detail, dataNewComers[++indexCurrent]).then(function () {
+            var $detail = $container.find('.detail'),
+                heightDetail = (parseInt($detail.css('margin-top')) || 0)
+                    + (parseInt($detail.css('border-top')) || 0)
+                    + (parseInt($detail.css('padding-top')) || 0)
+                    + $detail.height()
+                    + (parseInt($detail.css('margin-bottom')) || 0)
+                    + (parseInt($detail.css('border-bottom')) || 0)
+                    + (parseInt($detail.css('padding-bottom')) || 0),
+                scrollTopDetail = $detail.get(0).scrollTop,
+                scrillHeightDetail = $detail.get(0).scrollHeight;
+
+            if ((scrollTopDetail + heightDetail) < scrillHeightDetail) {
+                $detail.animate({
+                    scrollTop: scrollTopDetail + heightDetail
+                }, function () {
                     switchDetail($detail, end);
                 });
-            }
-            else if (typeof(end) == 'function') {
-                end();
+            } else {
+                if (dataNewComers.length > (indexCurrent + 1)) {
+                    var $list = $container.find('.list'),
+                        $items = $list.find('.item');
+
+                    indexCurrent++;
+
+                    if ($items.length > indexCurrent) {
+                        var heightList = (parseInt($list.css('margin-top')) || 0)
+                                + (parseInt($list.css('border-top')) || 0)
+                                + (parseInt($list.css('padding-top')) || 0)
+                                + $list.height()
+                                + (parseInt($list.css('margin-bottom')) || 0)
+                                + (parseInt($list.css('border-bottom')) || 0)
+                                + (parseInt($list.css('padding-bottom')) || 0),
+                            scrollTopList = $list.get(0).scrollTop,
+                            scrillHeightList = $list.get(0).scrollHeight,
+                            topItem = $items.eq(indexCurrent).position().top,
+                            heightItem = $items.eq(indexCurrent).height();
+                        if ((scrollTopList + heightList) < (topItem + heightItem)) {
+                            $list.animate({
+                                scrollTop: topItem + heightItem - heightList
+                            });
+                        }
+                    }
+
+                    detail.show($detail, dataNewComers[indexCurrent]).then(function () {
+                        switchDetail($detail, end);
+                    });
+                }
+                else if (typeof(end) == 'function') {
+                    end();
+                }
             }
         }, span);
     }

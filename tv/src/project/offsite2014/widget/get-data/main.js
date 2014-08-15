@@ -13,18 +13,21 @@
 
     return function (name) {
         var defer = when.defer(),
-            config = module.config();
+            config = module.config(),
+            jsonpCallback = {
+                jsonpCallback: 'jQuery123456'
+            };
 
         if (config.handler && config.handler[name]) {
             urls[name] = config.handler[name];
+            jsonpCallback = {};
         }
 
-        $.ajax({
+        $.ajax($.extend(true, {}, {
             dataType: 'jsonp',
-            // jsonpCallback: 'jQuery123456',
             type: 'get',
             url: urls[name]
-        }).then(function (dataJSON, status, xhr) {
+        }, jsonpCallback)).then(function (dataJSON, status, xhr) {
             var data = {};
             data[name] = dataJSON;
             defer.resolve(data);

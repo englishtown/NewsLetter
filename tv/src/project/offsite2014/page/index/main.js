@@ -1,4 +1,5 @@
 ﻿define([
+    'module',
     'jquery',
     'salespages-ui/widget/tagger/main',
     'csstemplate!salespages-ui/widget/bootstrap/3.1.1/main.css',
@@ -9,6 +10,7 @@
     './widget/new-comers/main',
     './widget/meet-our-people/main'
 ], function (
+    module,
     $,
     tagger,
     cssTxtBootstrapp,
@@ -28,7 +30,8 @@
     }
 
     function domReady($) {
-        var tabs = [{
+        var config = module.config(),
+            tabs = [{
                 $container: $('.new-comers'),
                 tab: newcomers
             },{
@@ -37,7 +40,7 @@
             }],
             isHeaderBarInit = false,
             isFirstTabInit = false,
-            span = 5000,
+            span = (config && config.span) ? config.span : 1000,
             iCurrentTab = 0;
 
         function switchTab() {

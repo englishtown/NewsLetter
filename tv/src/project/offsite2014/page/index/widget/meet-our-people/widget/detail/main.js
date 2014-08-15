@@ -44,6 +44,7 @@
 
             if ($container.children().length) {
                 $container.find('> *').fadeOut(function () {
+                    this.scrollLeft = 0;
                     fadeIn($container.find('> *'));
                 });
             }

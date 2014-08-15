@@ -1,8 +1,8 @@
 .meet-our-people .list {
-  padding: 1em;
-  overflow: auto;
+  padding: 2.75em 2.75em 0 2.75em;
+  overflow: hidden;
 }
 .meet-our-people .list .item .pic {
-  margin-bottom: 5em;
+  margin-bottom: 2.75em;
   width: 100%;
 }

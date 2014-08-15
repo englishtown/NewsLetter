@@ -1,6 +1,6 @@
 .meet-our-people .detail {
-  padding: 1em 4em;
-  overflow: auto;
+  padding: 1em 2em;
+  overflow: hidden;
 }
 .meet-our-people .detail .columns {
   display: none;

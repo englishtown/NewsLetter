@@ -105,13 +105,56 @@
 
     function switchDetail($detail, end) {
         timer = setTimeout(function () {
-            if (dataMeetOurPeople.length > (indexCurrent + 1)) {
-                detail.show($detail, dataMeetOurPeople[++indexCurrent]).then(function () {
+            var $detail = $container.find('.detail'),
+                widthDetail = (parseInt($detail.css('margin-left')) || 0)
+                    + (parseInt($detail.css('border-left')) || 0)
+                    + (parseInt($detail.css('padding-left')) || 0)
+                    + $detail.width()
+                    + (parseInt($detail.css('margin-right')) || 0)
+                    + (parseInt($detail.css('border-right')) || 0)
+                    + (parseInt($detail.css('padding-right')) || 0),
+                scrollLeftDetail = $detail.get(0).scrollLeft,
+                scrillWidthDetail = $detail.get(0).scrollWidth;
+            if ((scrollLeftDetail + widthDetail) < scrillWidthDetail) {
+                $detail.animate({
+                    scrollLeft: scrollLeftDetail + widthDetail
+                }, function () {
                     switchDetail($detail, end);
                 });
-            }
-            else if (typeof(end) == 'function') {
-                end();
+            } else {
+                if (dataMeetOurPeople.length > (indexCurrent + 1)) {
+                    var $list = $container.find('.list'),
+                        $items = $list.find('.item');
+
+                    indexCurrent++;
+
+                    if ($items.length > indexCurrent) {
+                        var heightList = (parseInt($list.css('margin-top')) || 0)
+                                + (parseInt($list.css('border-top')) || 0)
+                                + (parseInt($list.css('padding-top')) || 0)
+                                + $list.height()
+                                + (parseInt($list.css('margin-bottom')) || 0)
+                                + (parseInt($list.css('border-bottom')) || 0)
+                                + (parseInt($list.css('padding-bottom')) || 0),
+                            scrollTopList = $list.get(0).scrollTop,
+                            topItem = $items.eq(indexCurrent).position().top + scrollTopList,
+                            heightItem = $items.eq(indexCurrent).height(),
+                            paddingTopList = parseInt($list.css('padding-top')) || 0;
+                        if ((scrollTopList + heightList) < (topItem + heightItem)) {
+                            $list.animate({
+                                // scrollTop: topItem + heightItem - heightList
+                                scrollTop: topItem - paddingTopList
+                            });
+                        }
+                    }
+
+                    detail.show($detail, dataMeetOurPeople[indexCurrent]).then(function () {
+                        switchDetail($detail, end);
+                    });
+                }
+                else if (typeof(end) == 'function') {
+                    end();
+                }
             }
         }, span);
     }
