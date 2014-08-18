@@ -106,18 +106,20 @@
     function switchDetail($detail, end) {
         timer = setTimeout(function () {
             var $detail = $container.find('.detail'),
-                widthDetail = (parseInt($detail.css('margin-left')) || 0)
-                    + (parseInt($detail.css('border-left')) || 0)
-                    + (parseInt($detail.css('padding-left')) || 0)
-                    + $detail.width()
-                    + (parseInt($detail.css('margin-right')) || 0)
-                    + (parseInt($detail.css('border-right')) || 0)
-                    + (parseInt($detail.css('padding-right')) || 0),
-                scrollLeftDetail = $detail.get(0).scrollLeft,
-                scrillWidthDetail = $detail.get(0).scrollWidth;
-            if ((scrollLeftDetail + widthDetail) < scrillWidthDetail) {
-                $detail.animate({
-                    scrollLeft: scrollLeftDetail + widthDetail
+                $detailBody = $container.find('.body'),
+                heightDetail = (parseInt($detailBody.css('margin-top')) || 0)
+                    + (parseInt($detailBody.css('border-top')) || 0)
+                    + (parseInt($detailBody.css('padding-top')) || 0)
+                    + $detailBody.height()
+                    + (parseInt($detailBody.css('margin-bottom')) || 0)
+                    + (parseInt($detailBody.css('border-bottom')) || 0)
+                    + (parseInt($detailBody.css('padding-bottom')) || 0),
+                scrollTopDetail = $detailBody.get(0).scrollTop,
+                scrillHeightDetail = $detailBody.get(0).scrollHeight;
+
+            if ((scrollTopDetail + heightDetail) < scrillHeightDetail) {
+                $detailBody.animate({
+                    scrollTop: scrollTopDetail + heightDetail
                 }, function () {
                     switchDetail($detail, end);
                 });
