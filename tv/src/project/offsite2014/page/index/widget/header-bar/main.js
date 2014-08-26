@@ -4,90 +4,79 @@
     'csstemplate!./main.css',
     'cssrender',
     'when',
-    '../../../../widget/get-data/main'
+    '../../../../widget/template-engine/main'
 ], function (
     $,
     innerHTML,
     cssTxt,
     cssRender,
     when,
-    getData
+    templateEngine
 ) {
-    var defer = when.defer(),
-        isCssReady = false,
-        fnMain,
+    var $template = $(innerHTML),
+        $itemTemplate = $template.find('> .item').clone(),
+        deferCssReady = when.defer(),
+        deferDomReady = when.defer(),
         $container,
         $items,
-        dataHeaderBar,
         iCurrent = -1;
 
-    cssRender(cssTxt).then(cssReady);
+    cssRender(cssTxt).then(function () {
+        deferCssReady.resolve();
+    });
+    $(function () {
+        deferDomReady.resolve();
+    });
 
-    function cssReady() {
-        isCssReady = true;
-        if (!fnMain) {
-            fnMain();
-        }
-    }
-
-    function headerbar(container, data) {
-        if (!$container && $(container).length) {
-            $container = $(container);
-        }
-        dataHeaderBar = data || dataHeaderBar;
-        if ($container.length && !fnMain) {
-            fnMain = function () {
-                if ($.isReady) {
-                    domReady.apply(document, [$]);
+    function init(container, data) {
+        var deferInit = when.defer();
+        when.all([
+            deferCssReady.promise,
+            deferDomReady.promise
+        ]).then(function () {
+            if ($container && $container.length) {
+                if (container) {
+                    deferInit.reject();
+                    return deferInit.promise;
                 }
-                else {
-                    $(domReady);
+            } else if (!container || !$(container).length) {
+                deferInit.reject();
+                return deferInit.promise;
+            } else {
+                $container = $(container);
+            }
+            if (!data) {
+                deferInit.reject();
+                return deferInit.promise;
+            }
+
+            if (!$container.children().length) {
+                var $row = $template.clone().empty();
+                for (var i = 0, iLen = data.length; i < iLen; i++) {
+                    var $item = $itemTemplate.clone(),
+                        dataItem = data[i];
+                    templateEngine($item, dataItem);
+                    if (i == 0) {
+                        $item.find('.pre-line').remove();
+                    }
+                    if (i >= (iLen - 1)) {
+                        $item.find('.next-line').remove();
+                    }
+                    $row.append($item);
                 }
-            };
-            if (isCssReady) {
-                fnMain();
+                $container.append($row);
             }
-        }
-        else {
-            defer.reject();
-        }
-        return defer.promise;
+
+            deferInit.resolve();
+        });
+        return deferInit.promise;
     }
 
-    function domReady($) {
-        var $template = $(innerHTML),
-            $row = $template.clone().empty(),
-            $itemTemplate = $template.find('> .item').clone();
-        $container.append($row);
-
-        for (var i = 0, len = dataHeaderBar.length; i < len; i++) {
-            var $item = $itemTemplate.clone(),
-                dataItem = dataHeaderBar[i];
-            $item.find('.title').html(dataItem.title);
-            $item.find('.subtitle').html(dataItem.subtitle);
-            if (i == 0) {
-                $item.find('.pre-line').remove();
-            }
-            if (i >= (len - 1)) {
-                $item.find('.next-line').remove();
-            }
-            $row.append($item);
-            $items = $items ? $items.add($item) : $item;
+    function switchTab(iNext) {
+        var $items = ($container && $container.length) ? $container.find('> .row >.item') : undefined;
+        if (!$items || !$items.length) {
+            return;
         }
-        headerbar.isInit = true;
-        defer.resolve();
-    }
-
-    headerbar.refresh = function(index, obj) {
-        if ($items && $items.length && $items.length > index) {
-            var $item = $items.eq(index);
-            for (var i in obj) {
-                $item.find('.' + i).html(obj[i]);
-            }
-        }
-    }
-
-    headerbar.switch = function(iNext) {
         if (typeof(iNext) == 'undefined') {
             iNext = iCurrent + 1;
         }
@@ -107,5 +96,22 @@
         iCurrent = iNext;
     }
 
-    return headerbar;
+    function refresh(index, obj) {
+        var $items = ($container && $container.length) ? $container.find('> .row >.item') : undefined;
+        if (!$items || !$items.length) {
+            return;
+        }
+        if ($items.length > index) {
+            var $item = $items.eq(index);
+            for (var i in obj) {
+                $item.find('.' + i).html(obj[i]);
+            }
+        }
+    }
+
+    return new (function () {
+        this.init = init;
+        this.switchTab = switchTab;
+        this.refresh = refresh;
+    })();
 });

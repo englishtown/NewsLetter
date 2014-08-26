@@ -20,13 +20,13 @@
 }
 .wrapper .header-bar .item .title {
   font-family: Myriad Pro;
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: bold;
   white-space: nowrap;
 }
 .wrapper .header-bar .item .subtitle {
   font-family: Georgia;
-  font-size: 1em;
+  font-size: 0.8em;
   font-style: italic;
 }
 .wrapper .header-bar .item .icon {
@@ -34,7 +34,7 @@
   margin-top: 0.5em;
   width: 1.4em;
   height: 1.4em;
-  background: url(#cacheSvr#/_imgs/offsite2014/header-bar/icon.png) no-repeat center center;
+  background: url(#CacheSvr#/_imgs/offsite2014/header-bar/icon.png) no-repeat center center;
   background-size: contain;
 }
 .wrapper .header-bar .item .pre-line,
@@ -54,5 +54,5 @@
   color: #000;
 }
 .wrapper .header-bar .item.current .icon {
-  background-image: url(#cacheSvr#/_imgs/offsite2014/header-bar/icon-current.png);
+  background-image: url(#CacheSvr#/_imgs/offsite2014/header-bar/icon-current.png);
 }

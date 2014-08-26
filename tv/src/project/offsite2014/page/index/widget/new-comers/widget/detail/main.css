@@ -1,6 +1,6 @@
 .new-comers .detail {
   padding: 3em 2em 1em 2em;
-  overflow: auto;
+  overflow: hidden;
 }
 .new-comers .detail .header,
 .new-comers .detail .body {

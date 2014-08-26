@@ -19,183 +19,195 @@
     list,
     detail
 ) {
-    var $container,
-        spanSwtich = 3000,
-        fnEnd;
+    var $template = $(innerHTML),
+        deferCssReady = when.defer(),
+        deferDomReady = when.defer(),
+        span = 3000,
+        $container,
+        callbackData,
+        dataNewComers,
+        indexCurrent = 0,
+        timer;
 
-    var isCssReady = false,
-        isPendingInit = false,
-        isInitializing = false,
-        deferInit = when.defer(),
-        $template = $(innerHTML),
-        dataNewComers;
+    cssRender(cssTxt).then(function () {
+        deferCssReady.resolve();
+    });
+    $(function () {
+        deferDomReady.resolve();
+    });
 
-    var isListFilled = false,
-        $list,
-        $detail,
-        $items,
-        iCurrent = -1,
-        timer = {
-            newcomers: {
-                detail: undefined
+    function config(pConfig) {
+        if (pConfig) {
+            if (pConfig.span) {
+                span = pConfig.span;
             }
-        };
-
-    cssRender(cssTxt).then(cssReady);
-    function cssReady() {
-        isCssReady = true;
-        if (isPendingInit && $.isReady) {
-            isPendingInit = false;
-            init();
         }
     }
 
-    function init() {
-        isInitializing = true;
+    function show(container, end) {
+        var deferShow = when.defer();
+        if ($container && $container.length) {
+            if (container) {
+                deferShow.reject();
+                return deferShow.promise;
+            }
+        } else if (!container || !$(container).length) {
+            deferShow.reject();
+            return deferShow.promise;
+        } else {
+            $container = $(container);
+        }
 
-        pollingData.on('new-comers', function (data) {
-            dataNewComers = data['new-comers'];
+        if (!$container.children().length) {
+            var $item = $template.clone(),
+                $list = $item.filter('.list'),
+                $detail = $item.filter('.detail');
 
-            if (newcomers.isAvailable) {
-                if (!isListFilled) {
-                    fillList().then(function () {
-                        $container.show();
-                        if (isInitializing) {
-                            isInitializing = false;
-                            deferInit.resolve();
+            $container.append($item);
+
+            list.init($list).then(function () {
+                var isInit = {
+                        list: false,
+                        detail: false,
+                    };
+                callbackData = function(data) {
+                    dataNewComers = data['new-comers'];
+                    list.update(dataNewComers).then(function () {
+                        if (!isInit.list) {
+                            if (!isInit.detail && dataNewComers.length > indexCurrent) {
+                                detail.show($detail, dataNewComers[indexCurrent]).then(function () {
+                                    isInit.detail = true;
+                                    if (!isInit.list) {
+                                        // $container.fadeIn(function () {
+                                            isInit.list = true;
+                                            switchDetail($detail, end);
+                                            deferShow.resolve();
+                                        // });
+                                    }
+                                });
+                            } else {
+                                // $container.fadeIn(function () {
+                                    isInit.list = true;
+                                    deferShow.resolve();
+                                // });
+                            }
                         }
                     });
-                } else {
-                    list.update(window.angular.copy(dataNewComers));
+                };
+                pollingData.on('new-comers', callbackData);
+                $(window).on('resize', onResize);
+                onResize();
+            });
+        }
+
+        return deferShow.promise;
+    }
+
+    function switchDetail($detail, end) {
+        timer = setTimeout(function () {
+            var $detail = $container.find('.detail'),
+                heightDetail = (parseInt($detail.css('margin-top')) || 0)
+                    + (parseInt($detail.css('border-top')) || 0)
+                    + (parseInt($detail.css('padding-top')) || 0)
+                    + $detail.height()
+                    + (parseInt($detail.css('margin-bottom')) || 0)
+                    + (parseInt($detail.css('border-bottom')) || 0)
+                    + (parseInt($detail.css('padding-bottom')) || 0),
+                scrollTopDetail = $detail.get(0).scrollTop,
+                scrillHeightDetail = $detail.get(0).scrollHeight;
+
+            if ((scrollTopDetail + heightDetail) < scrillHeightDetail) {
+                $detail.animate({
+                    scrollTop: scrollTopDetail + heightDetail
+                }, function () {
+                    switchDetail($detail, end);
+                });
+            } else {
+                if (dataNewComers.length > (indexCurrent + 1)) {
+                    var $list = $container.find('.list'),
+                        $items = $list.find('.item');
+
+                    indexCurrent++;
+
+                    if ($items.length > indexCurrent) {
+                        var heightList = (parseInt($list.css('margin-top')) || 0)
+                                + (parseInt($list.css('border-top')) || 0)
+                                + (parseInt($list.css('padding-top')) || 0)
+                                + $list.height()
+                                + (parseInt($list.css('margin-bottom')) || 0)
+                                + (parseInt($list.css('border-bottom')) || 0)
+                                + (parseInt($list.css('padding-bottom')) || 0),
+                            scrollTopList = $list.get(0).scrollTop,
+                            scrillHeightList = $list.get(0).scrollHeight,
+                            topItem = $items.eq(indexCurrent).position().top,
+                            heightItem = $items.eq(indexCurrent).height();
+                        if ((scrollTopList + heightList) < (topItem + heightItem)) {
+                            $list.animate({
+                                scrollTop: topItem + heightItem - heightList
+                            });
+                        }
+                    }
+
+                    detail.show($detail, dataNewComers[indexCurrent]).then(function () {
+                        switchDetail($detail, end);
+                    });
+                }
+                else if (typeof(end) == 'function') {
+                    end();
                 }
             }
-            else if (isInitializing) {
-                isInitializing = false;
-                deferInit.resolve(newcomers);
-            }
-        });
+        }, span);
     }
 
-    function fillList() {
-        var deferFillList = when.defer();
-
-        (!newcomers.isInit ? list($list, window.angular.copy(dataNewComers)) : list.init($list)).then(function () {
-            $items = $list.find('.item');
-            if ($items.length) {
-                iCurrent = 0;
-                (!newcomers.isInit ? detail($detail, dataNewComers[iCurrent]) : detail.init($detail, dataNewComers[iCurrent])).then(function () {
-                    timer.newcomers.detail = setInterval(function () {
-                        if (!dataNewComers.length) {
-                            iCurrent = -1;
-                            return;
-                        }
-                        else {
-                            iCurrent++;
-                            if (dataNewComers.length > iCurrent) {
-                                newcomers.isAnimation = true;
-                                detail.update(dataNewComers[iCurrent]).then(function () {
-                                    newcomers.isAnimation = false;
-                                });
-                            }
-                            else {
-                                if (typeof(fnEnd) == 'function') {
-                                    fnEnd();
-                                }
-                            }
-                        }
-                    }, spanSwtich);
-                });
-            }
-            isListFilled = true;
-            newcomers.isAvailable = true;
-            newcomers.isInit = true;
-            deferFillList.resolve();
-        });
-
-        return deferFillList.promise;
+    function onResize() {
+        var $wrapper = $('.wrapper'),
+            $headerbar = $('.header-bar'),
+            $list = ($container && $container.length) ? $container.find('> .list') : undefined;
+        if ($wrapper.length && $headerbar.length && $list && $list.length) {
+            $list.css(
+                'height',
+                $wrapper.height() - (
+                    (parseInt($headerbar.css('margin-top')) || 0)
+                    + (parseInt($headerbar.css('border-top')) || 0)
+                    + (parseInt($headerbar.css('padding-top')) || 0)
+                    + $headerbar.height()
+                    + (parseInt($headerbar.css('padding-bottom')) || 0)
+                    + (parseInt($headerbar.css('border-bottom')) || 0)
+                    + (parseInt($headerbar.css('margin-bottom')) || 0)
+                )
+            );
+        }
     }
 
-
-    function newcomers() {}
-
-    newcomers.headerbar = {
-        title: 'NEW COMERS',
-        subtitle: 'August 2014'
-    };
-    newcomers.isInit = false;
-    newcomers.isAnimation = false;
-
-    newcomers.config = function (objConfig) {
-        if (objConfig) {
-            if (objConfig.container && $(objConfig.container).length) {
-                $container =  $(objConfig.container);
+    function hide() {
+        var deferHide = when.defer();
+        if (!$container || !$container.length) {
+            deferHide.reject();
+        } else {
+            $(window).off('resize', onResize);
+            pollingData.off('new-comers', callbackData);
+            callbackData = undefined;
+            if (timer) {
+                clearTimeout(timer);
+                timer = undefined;
             }
-            if (objConfig.span) {
-                spanSwtich = objConfig.span;
-            }
-            if (objConfig.end) {
-                fnEnd = objConfig.end
-            }
+            indexCurrent = 0;
+            dataNewComers = undefined;
+            // $container.fadeOut(function () {
+                $container = undefined;
+                deferHide.resolve();
+            // });
         }
-    };
+        return deferHide.promise;
+    }
 
-    newcomers.init = function () {
-        if (!$container || !$container.length || isPendingInit || isInitializing || newcomers.isInit) {
-            var deferReject = when.defer();
-            deferReject.reject();
-            return deferReject.promise;
-        }
-        isPendingInit = true;
-        $(function ($) {
-            if (isPendingInit && isCssReady) {
-                isPendingInit = false;
-                init();
-            }
-        });
-        return deferInit.promise;
-    };
-
-    newcomers.open = function () {
-        var deferOpen = when.defer(),
-            $templateClone = $template.clone();
-
-        $list = $templateClone.filter('.list');
-        $detail = $templateClone.filter('.detail');
-
-        $container.append($templateClone);
-
-        fillList().then(function () {
-            $container.fadeIn(function () {
-                deferOpen.resolve();
-            });
-        });
-
-        return deferOpen.promise;
-    };
-
-    newcomers.close = function () {
-        var deferClose = when.defer();
-
-        newcomers.isAvailable = false;
-
-        if (timer.newcomers.detail) {
-            clearInterval(timer.newcomers.detail);
-            timer.newcomers.detail = undefined;
-        }
-        $container.fadeOut(function () {
-            $container
-                .hide()
-                .empty();
-            isListFilled = false;
-            $list = undefined;
-            $detail = undefined;
-            $items = undefined;
-            iCurrent = -1;
-            deferClose.resolve();
-        });
-
-        return deferClose.promise;
-    };
-
-    return newcomers;
+    return new (function () {
+        this.headerbar = {
+            title: 'NEW COMERS',
+            subtitle: 'August 2014'
+        };
+        this.config = config;
+        this.show = show;
+        this.hide = hide;
+    })();
 });

@@ -161,6 +161,13 @@ module.exports = function(grunt) {
                 contents = 'define("' + moduleName + '", ["jquery"], function ($) { var jQuery = $; ' + contents + '});';
             }
         }
+        else if (
+            /^bower_components\/angular\/angular$/.test(moduleName)
+        ) {
+            if (!(/^define\s*?\(/.test(contents))) {
+                contents = 'define([], function () {\n\n' + contents + '\n\n    return window.angular;\n});';
+            }
+        }
         return contents;
     }
 
@@ -175,16 +182,21 @@ module.exports = function(grunt) {
 
     function middleware(connect, options, middlewares) {
         middlewares.splice(0, 0, function (req, res, next) {
-            if (/\.css$/ig.test(req.url)) {
+            var contents;
+            if (/\/bower_components\/angular\/angular\.js/ig.test(req.url)) {
+                contents = grunt.file.read('./' + req.url);
+                contents = 'define([], function () {\n\n' + contents + '\n\n    return window.angular;\n});';
+                res.setHeader('Content-Type', 'application/javascript');
+                res.end(contents);
+            } else if (/\.css$/ig.test(req.url)) {
                 var singleCacheSvr = configConnect.options.singleCacheSvr,
-                    randomCacheSvr = singleCacheSvr,
-                    contents = grunt.file.read('./' + req.url);
+                    randomCacheSvr = singleCacheSvr;
+                contents = grunt.file.read('./' + req.url);
                 contents = contents.replace(/(url\s*?\(\s*?[\'\"]?\s*?)(?:#cacheSvr\d?#)?(\/_imgs\/)/ig, '$1' + randomCacheSvr + '$2');
                 contents = contents.replace(/(url\s*?\(\s*?[\'\"]?\s*?)(?:#singleCacheSvr#)?(\/_imgs\/)/ig, '$1' + singleCacheSvr + '$2');
                 res.setHeader('Content-Type', 'text/css');
                 res.end(contents);
-            }
-            else {
+            } else {
                 return next();
             }
         });

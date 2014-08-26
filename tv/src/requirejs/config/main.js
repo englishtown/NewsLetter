@@ -12,7 +12,7 @@
             "shim": {
                 "bower_components/jquery-cookie/jquery.cookie": ["jquery"]
             },
-            "map" : {
+            "map": {
                 "*" : {
                     "poly": "bower_components/poly/poly",
                     "when": "bower_components/when/when",
@@ -22,7 +22,7 @@
                     "cssrender": "salespages-ui/widget/css-render/2.0/main"
                 }
             },
-            "config" : {
+            "config": {
                 "salespages-ui/widget/css-render/2.0/main" : {
                     "singleCacheSvr": config.singleCacheSvr || "",
                     "cacheSvr":  config.cacheSvr || config.singleCacheSvr || ""

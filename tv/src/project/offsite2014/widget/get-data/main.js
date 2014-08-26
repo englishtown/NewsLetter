@@ -1,23 +1,36 @@
 ﻿define([
+    'module',
     'jquery',
     'when'
 ], function (
+    module,
     $,
     when
 ) {
     var urls = {
-            'header-bar': '/src/project/offsite2014/page/index/widget/header-bar/data.js',
-            'new-comers': '/src/project/offsite2014/page/index/widget/new-comers/widget/list/data.js'
+            'new-comers': './src/project/offsite2014/page/index/widget/new-comers/widget/list/data.js'
         };
 
     return function (name) {
-        var defer = when.defer();
-        $.ajax({
-            dataType: 'json',
+        var defer = when.defer(),
+            config = module.config(),
+            jsonpCallback = {
+                jsonpCallback: 'jQuery123456'
+            };
+
+        if (config.handler && config.handler[name]) {
+            urls[name] = config.handler[name];
+            jsonpCallback = {};
+        }
+
+        $.ajax($.extend(true, {}, {
+            dataType: 'jsonp',
             type: 'get',
             url: urls[name]
-        }).then(function (dataJSON, status, xhr) {
-            defer.resolve(dataJSON);
+        }, jsonpCallback)).then(function (dataJSON, status, xhr) {
+            var data = {};
+            data[name] = dataJSON;
+            defer.resolve(data);
         }, function () {
             defer.reject();
         });
