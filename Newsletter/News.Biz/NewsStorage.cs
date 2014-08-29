@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HtmlAgilityPack;
 using News.DataAccess;
 using News.Service;
+using ServiceStack.Configuration;
 
 namespace News.Biz
 {
@@ -53,7 +54,7 @@ namespace News.Biz
                 {
                     letter = new Newsletter();
                     int id;
-                    if (int.TryParse(tdNode[0].InnerText,out id))
+                    if (int.TryParse(tdNode[0].InnerText, out id))
                     {
                         letter.Id = id;
                     }
@@ -72,7 +73,7 @@ namespace News.Biz
                 }
 
                 //3 pic
-                letter.Pic = tdNode[2].FirstChild.GetAttributeValue("href","");
+                letter.Pic = tdNode[2].FirstChild.GetAttributeValue("href", "");
                 //4 label
                 letter.Label = tdNode[3].InnerText;
                 //5 name
@@ -93,10 +94,10 @@ namespace News.Biz
                 var dbLetter = this.newsletterDal.GetById(letter.Id);
                 if (dbLetter == null)
                 {
-                    this.newsletterDal.InsertNewsletter(letter);    
+                    this.newsletterDal.InsertNewsletter(letter);
                     continue;
                 }
-                
+
                 dbLetter.State = letter.State;
                 dbLetter.Pic = letter.Pic;
                 dbLetter.Label = letter.Label;
@@ -112,13 +113,18 @@ namespace News.Biz
             }
         }
 
-        public void LogError(string input,Exception ex)
+        public void LogError(string input, Exception ex)
         {
-            var log = new Log();
-            log.Input = input??"";
-            log.Message = string.Format("Message:{0} Stack:{1}", ex.Message, ex.StackTrace);
-            log.CreateTime = DateTime.Now;
-            newsletterDal.AddLog(log);
+            var appSettings = new AppSettings();
+            var isLog = appSettings.GetString("IsLog");
+            if (!string.IsNullOrEmpty(isLog) && isLog == "true")
+            {
+                var log = new Log();
+                log.Input = input ?? "";
+                log.Message = string.Format("Message:{0} Stack:{1}", ex.Message, ex.StackTrace);
+                log.CreateTime = DateTime.Now;
+                newsletterDal.AddLog(log);
+            }
         }
     }
 }
