@@ -34,10 +34,10 @@
             tabs = [{
                 $container: $('.new-comers'),
                 tab: newcomers
-            },{
+            }/*,{
                 $container: $('.meet-our-people'),
                 tab: meetourpeople
-            }],
+            }*/],
             isHeaderBarInit = false,
             isFirstTabInit = false,
             span = (config && config.span) ? config.span : 1000,
@@ -50,7 +50,8 @@
                 tabNext = tabs[iNext].tab,
                 $containerNext = tabs[iNext].$container;
 
-            if ((iCurrentTab != iNext) && tabCurrent.hide && tabNext.show) {
+            // if ((iCurrentTab != iNext) && tabCurrent.hide && tabNext.show) {
+            if (tabCurrent.hide && tabNext.show) {
                 tabCurrent.hide().then(function () {
                     $containerCurrent.fadeOut(function () {
                         $containerCurrent
