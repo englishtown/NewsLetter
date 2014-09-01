@@ -50,8 +50,7 @@
                 tabNext = tabs[iNext].tab,
                 $containerNext = tabs[iNext].$container;
 
-            // if ((iCurrentTab != iNext) && tabCurrent.hide && tabNext.show) {
-            if (tabCurrent.hide && tabNext.show) {
+            if ((iCurrentTab != iNext) && tabCurrent.hide && tabNext.show) {
                 tabCurrent.hide().then(function () {
                     $containerCurrent.fadeOut(function () {
                         $containerCurrent

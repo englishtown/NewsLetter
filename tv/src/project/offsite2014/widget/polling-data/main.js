@@ -8,58 +8,27 @@
     var data = {},
         fnCallback = {},
         span = 3000,
-        timer = {},
-
-        $console,
-        dateUpdate
-        iConsole = 0;
-
-    function getStrDate() {
-        var now = new Date();
-        return now.getHours().toString() + ':' + now.getMinutes().toString() + ':' + now.getSeconds().toString();
-    }
+        timer = {};
 
     function polling(name) {
-        if (!$console || !$console.length) {
-            $console = $('.console');
-        }
-        $console.html($console.html() + ' <b>|</b> ' + 'begin getData');
         if (fnCallback[name] && !fnCallback[name].isGetingData) {
             fnCallback[name].isGetingData = true;
         }
         getData(name).then(function (dataJSON) {
-            $console.html($console.html() + ' <b>|</b> ' + 'receive data');
-            var isEquals = true;
-            try {
-                isEquals = window.angular.equals(data[name], dataJSON[name]);
-            } catch (ex) {
-                $console.html($console.html() + ' <b>|</b> ' + 'equals error');
-            }
-            if (!isEquals) {
-                dateUpdate = getStrDate();
-                $console.html($console.html() + ' <b>|</b> ' + 'fillData');
+            if (!window.angular.equals(data[name], dataJSON[name])) {
                 data[name] = dataJSON[name];
-                $console.html($console.html() + ' <b>|</b> ' + 'callback');
                 if (fnCallback[name] && fnCallback[name].fnResolve) {
                     for (var i = 0, len = fnCallback[name].fnResolve.length; i < len; i++) {
                         fnCallback[name].fnResolve[i](data);
                     }
                 }
-                $console.html($console.html() + ' <b>|</b> ' + 'UI updated');
             }
-            $console.html(
-                $console.html() + ' <b>|</b> ' + 'getData:' + getStrDate() + '<br />'
-                + '!equals: ' + dateUpdate
-            );
             if (timer[name]) {
-                $console.html($console.html() + ' <b>|</b> ' + 'clearTimeout');
                 clearTimeout(timer[name]);
                 delete timer[name];
             }
             if (fnCallback[name] && fnCallback[name].fnResolve && fnCallback[name].fnResolve.length) {
-                $console.html($console.html() + ' <b>|</b> ' + 'setTimeout:' + span);
                 timer[name] = setTimeout(function () {
-                    $console.html('run polling ' + (++iConsole).toString());
                     polling(name);
                 }, span);
             }

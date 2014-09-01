@@ -23,6 +23,7 @@
         deferCssReady = when.defer(),
         deferDomReady = when.defer(),
         span = 3000,
+        numberOfDisplay = 12,
         $container,
         callbackData,
         dataNewComers,
@@ -40,6 +41,9 @@
         if (pConfig) {
             if (pConfig.span) {
                 span = pConfig.span;
+            }
+            if (pConfig.numberOfDisplay) {
+                numberOfDisplay = pConfig.numberOfDisplay;
             }
         }
     }
@@ -71,7 +75,14 @@
                         detail: false,
                     };
                 callbackData = function(data) {
-                    dataNewComers = data['new-comers'];
+                    if (!data['new-comers'] && !(data['new-comers'] instanceof Array)) {
+                        return;
+                    }
+                    var arrDataNewComers = [];
+                    for (var i = 0, len = data['new-comers'].length; i < len && i < numberOfDisplay; i++) {
+                        arrDataNewComers.push(data['new-comers'][i]);
+                    }
+                    dataNewComers = arrDataNewComers;
                     list.update(dataNewComers).then(function () {
                         if (!isInit.list) {
                             if (!isInit.detail && dataNewComers.length > indexCurrent) {
@@ -124,6 +135,12 @@
                 });
             } else {
                 if (dataNewComers.length > (indexCurrent + 1)) {
+
+                } else {
+                    indexCurrent = -1;
+                }
+                if (true) {
+
                     var $list = $container.find('.list'),
                         $items = $list.find('.item');
 
