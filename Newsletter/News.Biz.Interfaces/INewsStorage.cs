@@ -6,7 +6,7 @@ namespace News.Biz
 {
     public interface INewsStorage
     {
-        List<NewsLetterResponse> GetNewsLetter();
+        List<NewCommerResponse> GetNewsLetter();
         void UpdateNews();
         void LogError(string input,Exception ex);
     }

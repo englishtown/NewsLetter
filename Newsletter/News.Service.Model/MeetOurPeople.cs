@@ -2,8 +2,8 @@
 
 namespace News.Service
 {
-    [Route("/newsletter")]
-    public class NewsLetter
+    [Route("/meetourpeople")]
+    public class MeetOurPeople
     {
         public string Id { get; set; }
     }

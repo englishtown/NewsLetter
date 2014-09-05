@@ -1,6 +1,6 @@
 ﻿namespace News.Service
 {
-    public class NewsLetterResponse
+    public class MeetOurPeopleResponse
     {
         public string pic { get; set; }
         public string label { get; set; }

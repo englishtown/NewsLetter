@@ -3,15 +3,15 @@ using News.Biz;
 
 namespace News.Service
 {
-    public class NewsLetterService : ServiceStack.Service
+    public class NewCommerService : ServiceStack.Service
     {
         private INewsStorage newsStorage;
-        public NewsLetterService(INewsStorage storage)
+        public NewCommerService(INewsStorage storage)
         {
             this.newsStorage = storage;
         }
 
-        public object Any(NewsLetter request)
+        public object Any(NewCommer request)
         {
             try
             {

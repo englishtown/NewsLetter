@@ -18,15 +18,15 @@ namespace News.Biz
             this.newsletterDal = newsletter;
         }
 
-        public List<NewsLetterResponse> GetNewsLetter()
+        public List<NewCommerResponse> GetNewsLetter()
         {
-            var responses = new List<NewsLetterResponse>();
+            var responses = new List<NewCommerResponse>();
             var newsletters = this.newsletterDal.GetAllList();
             if (newsletters != null && newsletters.Count > 0)
             {
                 foreach (var newsletter in newsletters)
                 {
-                    var responseItem = new NewsLetterResponse();
+                    var responseItem = new NewCommerResponse();
                     responseItem.pic = newsletter.Pic;
                     responseItem.label = newsletter.Label;
                     responseItem.name = newsletter.Name;

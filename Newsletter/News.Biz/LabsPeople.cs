@@ -5,10 +5,10 @@ using ServiceStack.Configuration;
 
 namespace News.Biz
 {
-    public class LabsNews : ILabsNews
+    public class LabsPeople : ILabsPeople
     {
         private ILogin myLogin;
-        public LabsNews(ILogin login)
+        public LabsPeople(ILogin login)
         {
             this.myLogin = login;
         }
@@ -17,8 +17,8 @@ namespace News.Biz
         {
             CookieContainer cc = myLogin.GetLogin();
             var appSettings = new AppSettings();
-            string newsUrl = appSettings.GetString("NewCommer");
-            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(newsUrl);
+            string url = appSettings.GetString("MeetOurPeople");
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
             myRequest.CookieContainer = cc;
             HttpWebResponse myResponse = (HttpWebResponse)myRequest.GetResponse();
             cc.Add(myResponse.Cookies);

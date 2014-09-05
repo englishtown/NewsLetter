@@ -45,8 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LabsNews.cs" />
+    <Compile Include="LabsPeople.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="NewsStorage.cs" />
+    <Compile Include="OurPeople.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
