@@ -136,10 +136,10 @@
             } else {
                 if (dataNewComers.length > (indexCurrent + 1)) {
 
-                } else {
-                    indexCurrent = -1;
-                }
-                if (true) {
+                // } else {
+                //     indexCurrent = -1;
+                // }
+                // if (true) {
 
                     var $list = $container.find('.list'),
                         $items = $list.find('.item');

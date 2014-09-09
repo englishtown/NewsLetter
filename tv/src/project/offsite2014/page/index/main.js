@@ -34,10 +34,10 @@
             tabs = [{
                 $container: $('.new-comers'),
                 tab: newcomers
-            }/*,{
+            },{
                 $container: $('.meet-our-people'),
                 tab: meetourpeople
-            }*/],
+            }],
             isHeaderBarInit = false,
             isFirstTabInit = false,
             span = (config && config.span) ? config.span : 1000,

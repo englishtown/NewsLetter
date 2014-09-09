@@ -8,7 +8,8 @@
     when
 ) {
     var urls = {
-            'new-comers': './src/project/offsite2014/page/index/widget/new-comers/widget/list/data.js'
+            'new-comers': './src/project/offsite2014/page/index/widget/new-comers/widget/list/data.js',
+            'meet-our-people': './src/project/offsite2014/page/index/widget/new-comers/widget/list/data.js'
         };
 
     return function (name) {
