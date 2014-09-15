@@ -35,7 +35,7 @@ namespace News.DataAccess
         {
             using (IDbConnection db = Common.SqliteFile.OpenDbConnection())
             {
-                string sql = "select * from MeetOurPeopleEntity where State = 1";
+                string sql = "select * from MeetOurPeopleEntity where State = 1  order by Id desc";
                 return db.SqlList<MeetOurPeopleEntity>(sql);
             }
         }

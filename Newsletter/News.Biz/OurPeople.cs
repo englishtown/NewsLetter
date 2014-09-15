@@ -45,6 +45,7 @@ namespace News.Biz
         public void UpdateOurPeople()
         {
             HtmlNodeCollection newsContent = labsPeople.NewsContent();
+            var inputIds = new List<int>();
             foreach (var trNode in newsContent)
             {
                 MeetOurPeopleEntity peopleEntity = null;
@@ -57,6 +58,7 @@ namespace News.Biz
                     if (int.TryParse(tdNode[0].InnerText, out id))
                     {
                         peopleEntity.Id = id;
+                        inputIds.Add(id);
                     }
                 }
 
@@ -110,6 +112,17 @@ namespace News.Biz
                 dbPeople.Skype = peopleEntity.Skype;
                 dbPeople.ModifyTime = DateTime.Now;
                 this.ourPeopleDal.UpdateOurPeople(dbPeople);
+            }
+            //2
+            var dbItems = this.ourPeopleDal.GetAllList();
+            foreach (var item in dbItems)
+            {
+                bool blExists = inputIds.Contains(item.Id);
+                if (!blExists)
+                {
+                    item.State = 0;
+                    this.ourPeopleDal.UpdateOurPeople(item);
+                }
             }
         }
 

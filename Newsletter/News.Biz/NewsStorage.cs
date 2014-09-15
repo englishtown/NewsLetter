@@ -45,6 +45,7 @@ namespace News.Biz
         public void UpdateNews()
         {
             HtmlNodeCollection newsContent = labsNews.NewsContent();
+            var inputIds = new List<int>();
             foreach (var trNode in newsContent)
             {
                 Newsletter letter = null;
@@ -57,6 +58,7 @@ namespace News.Biz
                     if (int.TryParse(tdNode[0].InnerText, out id))
                     {
                         letter.Id = id;
+                        inputIds.Add(id);
                     }
                 }
 
@@ -110,6 +112,17 @@ namespace News.Biz
                 dbLetter.Skype = letter.Skype;
                 dbLetter.ModifyTime = DateTime.Now;
                 this.newsletterDal.UpdateNewsletter(dbLetter);
+            }
+            //2
+            var dbItems = this.newsletterDal.GetAllList();
+            foreach (var item in dbItems)
+            {
+                bool blExists = inputIds.Contains(item.Id);
+                if (!blExists)
+                {
+                    item.State = 0;
+                    this.newsletterDal.UpdateNewsletter(item);
+                }
             }
         }
 
