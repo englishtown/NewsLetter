@@ -12,7 +12,6 @@ namespace News.Service
 
         public override void Configure(Funq.Container container)
         {
-            container.RegisterAutoWiredAs<Login, ILogin>();
             container.RegisterAutoWiredAs<LabsNews, ILabsNews>();
             container.RegisterAutoWiredAs<NewsletterDal, INewsletterDal>();
             container.RegisterAutoWiredAs<NewsStorage, INewsStorage>();

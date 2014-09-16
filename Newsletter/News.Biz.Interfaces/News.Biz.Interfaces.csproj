@@ -39,7 +39,6 @@
   <ItemGroup>
     <Compile Include="ILabsNews.cs" />
     <Compile Include="ILabsPeople.cs" />
-    <Compile Include="ILogin.cs" />
     <Compile Include="INewsStorage.cs" />
     <Compile Include="IOurPeople.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

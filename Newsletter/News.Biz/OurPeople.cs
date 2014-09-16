@@ -76,6 +76,7 @@ namespace News.Biz
 
                 //3 pic
                 peopleEntity.Pic = tdNode[2].FirstChild.GetAttributeValue("href", "");
+                peopleEntity.Pic = FiltHref(peopleEntity.Pic);
                 //4 label
                 peopleEntity.Label = tdNode[3].InnerText;
                 //5 name
@@ -88,6 +89,7 @@ namespace News.Biz
                 peopleEntity.Desc = tdNode[7].InnerText;
                 //9 pic2
                 peopleEntity.Pic2 = tdNode[8].FirstChild.GetAttributeValue("href", "");
+                peopleEntity.Pic2 = FiltHref(peopleEntity.Pic2);
                 //10 mobile
                 peopleEntity.Mobile = tdNode[9].InnerText;
                 //11 skype
@@ -138,6 +140,18 @@ namespace News.Biz
                 log.CreateTime = DateTime.Now;
                 ourPeopleDal.AddLog(log);
             }
+        }
+
+        private string FiltHref(string rawHref)
+        {
+            if (string.IsNullOrWhiteSpace(rawHref))
+            {
+                return rawHref;
+            }
+
+            string relBegin = rawHref.Substring(2);
+            string relEnd = relBegin.Substring(0, relBegin.Length - 2);
+            return relEnd;
         }
     }
 }
