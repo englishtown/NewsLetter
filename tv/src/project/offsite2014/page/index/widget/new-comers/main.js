@@ -28,7 +28,8 @@
         callbackData,
         dataNewComers,
         indexCurrent = 0,
-        timer;
+        timer,
+        isOnlyNewComers = !(function(n){var qs=window.location.href.toLowerCase().match(/[^\?#]+?\?(.*?)(?:#.*?)?$/i),m=qs?(new RegExp('(?:^|&)'+n+'=([^&]*?)(?:&|$)','i')).exec(qs[1]):qs;return m?m[1]:undefined})('meetourpeople');
 
     cssRender(cssTxt).then(function () {
         deferCssReady.resolve();
@@ -125,7 +126,8 @@
                     + (parseInt($detail.css('border-bottom')) || 0)
                     + (parseInt($detail.css('padding-bottom')) || 0),
                 scrollTopDetail = $detail.get(0).scrollTop,
-                scrillHeightDetail = $detail.get(0).scrollHeight;
+                scrillHeightDetail = $detail.get(0).scrollHeight,
+                flgNext;
 
             if ((scrollTopDetail + heightDetail) < scrillHeightDetail) {
                 $detail.animate({
@@ -134,13 +136,16 @@
                     switchDetail($detail, end);
                 });
             } else {
-                if (dataNewComers.length > (indexCurrent + 1)) {
+                if (isOnlyNewComers) {
+                    if (dataNewComers.length <= (indexCurrent + 1)) {
+                        indexCurrent = -1;
+                    }
+                    flgNext = true;
+                } else {
+                    flgNext = dataNewComers.length > (indexCurrent + 1);
+                }
 
-                // } else {
-                //     indexCurrent = -1;
-                // }
-                // if (true) {
-
+                if (flgNext) {
                     var $list = $container.find('.list'),
                         $items = $list.find('.item');
 
@@ -168,8 +173,7 @@
                     detail.show($detail, dataNewComers[indexCurrent]).then(function () {
                         switchDetail($detail, end);
                     });
-                }
-                else if (typeof(end) == 'function') {
+                } else if (typeof(end) == 'function') {
                     end();
                 }
             }

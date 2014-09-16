@@ -29,19 +29,25 @@
         $(domReady);
     }
 
+    function getParameterByURL(n){var qs=window.location.href.toLowerCase().match(/[^\?#]+?\?(.*?)(?:#.*?)?$/i),m=qs?(new RegExp('(?:^|&)'+n+'=([^&]*?)(?:&|$)','i')).exec(qs[1]):qs;return m?m[1]:undefined};
+
     function domReady($) {
         var config = module.config(),
             tabs = [{
                 $container: $('.new-comers'),
                 tab: newcomers
-            },{
-                $container: $('.meet-our-people'),
-                tab: meetourpeople
             }],
             isHeaderBarInit = false,
             isFirstTabInit = false,
             span = (config && config.span) ? config.span : 1000,
             iCurrentTab = 0;
+
+        if (getParameterByURL('meetourpeople')) {
+            tabs.push({
+                $container: $('.meet-our-people'),
+                tab: meetourpeople
+            });
+        }
 
         function switchTab() {
             var tabCurrent = tabs[iCurrentTab].tab,
