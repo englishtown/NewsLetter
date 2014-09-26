@@ -37,6 +37,14 @@
 
             function fadeIn($item) {
                 templateEngine($item, data);
+                var $desc = $item.find('.desc');
+                $desc.html((function () {
+                    var strBR = '';
+                    for (var i = 0; i < 19; i++) {
+                        strBR += '<br />';
+                    }
+                    return strBR;
+                })() + $desc.html());
                 $item.fadeIn(function () {
                     deferShow.resolve();
                 });

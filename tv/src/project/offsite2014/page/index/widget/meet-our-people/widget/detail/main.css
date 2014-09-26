@@ -5,64 +5,53 @@
 .meet-our-people .detail .columns {
   display: none;
   position: relative;
-  height: 100%;
-  /*
-            -moz-column-count: 2;
-            -webkit-column-count: 2;
-            column-count: 2;
-            -moz-column-gap: 4em;
-            -webkit-column-gap: 4em;
-            column-gap: 4em;
-            */
+  min-height: 100%;
+  -moz-column-count: 2;
+  -webkit-column-count: 2;
+  column-count: 2;
+  -moz-column-gap: 4em;
+  -webkit-column-gap: 4em;
+  column-gap: 4em;
 }
-.meet-our-people .detail .columns .left,
-.meet-our-people .detail .columns .right {
+.meet-our-people .detail .columns .header {
   position: absolute;
-  top: 0;
-  width: 49%;
-  height: 100%;
-  overflow: hidden;
-}
-.meet-our-people .detail .columns .left {
+  top: 11em;
   left: 0;
-  background-color: transparent;
+  padding-right: 2em;
+  width: 50%;
 }
-.meet-our-people .detail .columns .left .header {
-  margin-top: 10em;
-}
-.meet-our-people .detail .columns .left .header .pic {
+.meet-our-people .detail .columns .header .pic {
   width: 100%;
 }
-.meet-our-people .detail .columns .left .header .info {
+.meet-our-people .detail .columns .header .info {
   font-family: Georgia;
   font-size: 1em;
   font-style: italic;
 }
-.meet-our-people .detail .columns .left .header .info .name {
+.meet-our-people .detail .columns .header .info .name {
   font-family: Myriad Pro;
-  font-size: 3.6em;
+  font-size: 2.2em;
   font-weight: bold;
 }
-.meet-our-people .detail .columns .left .touch {
-  margin-top: 4em;
-  line-height: 1.4em;
-  color: #45A39A;
+.meet-our-people .detail .columns .body {
+  /* margin-top: 2.6em; */
 }
-.meet-our-people .detail .columns .left .touch .touch-label {
-  font-weight: bold;
-}
-.meet-our-people .detail .columns .left .touch .touch-mobile {
-  margin-top: 1.4em;
-}
-.meet-our-people .detail .columns .left .touch .two-dimensional-code {
-  width: 100%;
-}
-.meet-our-people .detail .columns .right {
-  right: 0;
-}
-.meet-our-people .detail .columns .right .desc {
-  margin-left: 2em;
+.meet-our-people .detail .columns .body .desc {
   font-family: Myriad Pro;
   font-size: 1em;
   line-height: 1.4em;
+}
+.meet-our-people .detail .columns .body .touch {
+  margin-top: 2em;
+  line-height: 1.4em;
+  color: #45A39A;
+}
+.meet-our-people .detail .columns .body .touch .touch-label {
+  font-weight: bold;
+}
+.meet-our-people .detail .columns .body .touch .touch-mobile {
+  margin-top: 1.4em;
+}
+.meet-our-people .detail .columns .body .touch .two-dimensional-code {
+  width: 100%;
 }

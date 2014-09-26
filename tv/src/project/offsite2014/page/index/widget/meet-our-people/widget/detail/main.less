@@ -6,45 +6,44 @@
         .columns {
             display: none;
             position: relative;
-            height: 100%;
+            min-height: 100%;
 
-            /*
             -moz-column-count: 2;
             -webkit-column-count: 2;
             column-count: 2;
             -moz-column-gap: 4em;
             -webkit-column-gap: 4em;
             column-gap: 4em;
-            */
-            .left,
-            .right {
+
+            .header {
                 position: absolute;
-                top: 0;
-                width: 49%;
-                height: 100%;
-                overflow: hidden;
-            }
-            .left {
+                top: 11em;
                 left: 0;
-                background-color: transparent;
-                .header {
-                    margin-top: 10em;
-                    .pic {
-                        width: 100%;
-                    }
-                    .info {
-                        font-family: Georgia;
-                        font-size: 1em;
-                        font-style: italic;
-                        .name {
-                            font-family: Myriad Pro;
-                            font-size: 3.6em;
-                            font-weight: bold;
-                        }
+                padding-right: 4em / 2;
+                width: 50%;
+                .pic {
+                    width: 100%;
+                }
+                .info {
+                    font-family: Georgia;
+                    font-size: 1em;
+                    font-style: italic;
+                    .name {
+                        font-family: Myriad Pro;
+                        font-size: 2.2em;
+                        font-weight: bold;
                     }
                 }
+            }
+            .body {
+                /* margin-top: 2.6em; */
+                .desc {
+                    font-family: Myriad Pro;
+                    font-size: 1em;
+                    line-height: 1.4em;
+                }
                 .touch {
-                    margin-top: 4em;
+                    margin-top: 2em;
                     line-height: 1.4em;
                     color: #45A39A;
                     .touch-label {
@@ -56,15 +55,6 @@
                     .two-dimensional-code {
                         width: 100%;
                     }
-                }
-            }
-            .right {
-                right: 0;
-                .desc {
-                    margin-left: 2em;
-                    font-family: Myriad Pro;
-                    font-size: 1em;
-                    line-height: 1.4em;
                 }
             }
         }
