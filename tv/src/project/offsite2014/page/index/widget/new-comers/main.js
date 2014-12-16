@@ -28,8 +28,7 @@
         callbackData,
         dataNewComers,
         indexCurrent = 0,
-        timer,
-        isOnlyNewComers = !(function(n){var qs=window.location.href.toLowerCase().match(/[^\?#]+?\?(.*?)(?:#.*?)?$/i),m=qs?(new RegExp('(?:^|&)'+n+'=([^&]*?)(?:&|$)','i')).exec(qs[1]):qs;return m?m[1]:undefined})('meetourpeople');
+        timer;
 
     cssRender(cssTxt).then(function () {
         deferCssReady.resolve();
@@ -136,14 +135,7 @@
                     switchDetail($detail, end);
                 });
             } else {
-                if (isOnlyNewComers) {
-                    if (dataNewComers.length <= (indexCurrent + 1)) {
-                        indexCurrent = -1;
-                    }
-                    flgNext = true;
-                } else {
-                    flgNext = dataNewComers.length > (indexCurrent + 1);
-                }
+                flgNext = dataNewComers.length > (indexCurrent + 1);
 
                 if (flgNext) {
                     var $list = $container.find('.list'),

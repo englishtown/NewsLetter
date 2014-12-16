@@ -8,7 +8,8 @@
     'when',
     './widget/header-bar/main',
     './widget/new-comers/main',
-    './widget/meet-our-people/main'
+    './widget/meet-our-people/main',
+    './widget/qa-dashboard/main'
 ], function (
     module,
     $,
@@ -19,7 +20,8 @@
     when,
     headerbar,
     newcomers,
-    meetourpeople
+    meetourpeople,
+    qadashboard
 ) {
     (new tagger()).tag({more: true});
 
@@ -48,6 +50,11 @@
                 tab: meetourpeople
             });
         }
+
+        tabs.push({
+            $container: $('.qa-dashboard'),
+            tab: qadashboard
+        });
 
         function switchTab() {
             var tabCurrent = tabs[iCurrentTab].tab,

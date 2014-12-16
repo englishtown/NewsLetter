@@ -28,7 +28,11 @@
                 }
             };
             configRequire[config.app + '/project/offsite2014/page/index/main'] = {
-                span: 5000
+                span: 1000
+            };
+            configRequire[config.app + '/project/offsite2014/page/index/widget/qa-dashboard/main'] = {
+                handler: "http://jenkins.englishtown.com:8080",
+                span: 10000
             };
             require.config({
                 context: config.context || '_',
@@ -47,6 +51,7 @@
         <div class="header-bar"></div>
         <div class="new-comers"></div>
         <div class="meet-our-people"></div>
+        <div class="qa-dashboard"></div>
     </div>
 
     <div class="console"></div>
