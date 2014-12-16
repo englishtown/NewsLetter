@@ -23,6 +23,7 @@
         deferCssReady = when.defer(),
         deferDomReady = when.defer(),
         span = 3000,
+        numberOfDisplay = 12,
         $container,
         callbackData,
         dataMeetOurPeople,
@@ -40,6 +41,9 @@
         if (pConfig) {
             if (pConfig.span) {
                 span = pConfig.span;
+            }
+            if (pConfig.numberOfDisplay) {
+                numberOfDisplay = pConfig.numberOfDisplay;
             }
         }
     }
@@ -71,7 +75,14 @@
                         detail: false,
                     };
                 callbackData = function(data) {
-                    dataMeetOurPeople = data['new-comers'];
+                    if (!data['meet-our-people'] && !(data['meet-our-people'] instanceof Array)) {
+                        return;
+                    }
+                    var arrDataMeetOurPeople = [];
+                    for (var i = 0, len = data['meet-our-people'].length; i < len && i < numberOfDisplay; i++) {
+                        arrDataMeetOurPeople.push(data['meet-our-people'][i]);
+                    }
+                    dataMeetOurPeople = arrDataMeetOurPeople;
                     list.update(dataMeetOurPeople).then(function () {
                         if (!isInit.list) {
                             if (!isInit.detail && dataMeetOurPeople.length > indexCurrent) {
@@ -94,7 +105,7 @@
                         }
                     });
                 };
-                pollingData.on('new-comers', callbackData);
+                pollingData.on('meet-our-people', callbackData);
                 $(window).on('resize', onResize);
                 onResize();
             });

@@ -11,6 +11,9 @@
         timer = {};
 
     function polling(name) {
+        if (fnCallback[name] && !fnCallback[name].isGetingData) {
+            fnCallback[name].isGetingData = true;
+        }
         getData(name).then(function (dataJSON) {
             if (!window.angular.equals(data[name], dataJSON[name])) {
                 data[name] = dataJSON[name];
@@ -20,14 +23,18 @@
                     }
                 }
             }
+            if (timer[name]) {
+                clearTimeout(timer[name]);
+                delete timer[name];
+            }
             if (fnCallback[name] && fnCallback[name].fnResolve && fnCallback[name].fnResolve.length) {
                 timer[name] = setTimeout(function () {
                     polling(name);
                 }, span);
             }
-            else if (timer[name]) {
-                clearTimeout(timer[name]);
-                delete timer[name];
+
+            if (fnCallback[name] && fnCallback[name].isGetingData) {
+                fnCallback[name].isGetingData = false;
             }
         });
     }
@@ -36,12 +43,12 @@
         if (!fnCallback[name]) {
             fnCallback[name] = {
                 fnResolve: [],
-                fnResolveAppend: []
+                isGetingData: false
             };
         }
         if (fnResolve) {
             var iFlg = true;
-            for (var i = 0, iLen = fnCallback[name].length; i < iLen; i++) {
+            for (var i = 0, iLen = fnCallback[name].fnResolve.length; i < iLen; i++) {
                 if (fnCallback[name].fnResolve[i] == fnResolve) {
                     iFlg = false;
                     break;
@@ -50,7 +57,7 @@
             if (iFlg) {
                 fnCallback[name].fnResolve.push(fnResolve);
 
-                if (fnCallback[name].fnResolve.length == 1) {
+                if ((fnCallback[name].fnResolve.length == 1) && !fnCallback[name].isGetingData) {
                     setTimeout(function () {
                         polling(name);
                     }, 0);

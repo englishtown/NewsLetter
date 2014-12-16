@@ -23,6 +23,7 @@
         deferCssReady = when.defer(),
         deferDomReady = when.defer(),
         span = 3000,
+        numberOfDisplay = 12,
         $container,
         callbackData,
         dataNewComers,
@@ -40,6 +41,9 @@
         if (pConfig) {
             if (pConfig.span) {
                 span = pConfig.span;
+            }
+            if (pConfig.numberOfDisplay) {
+                numberOfDisplay = pConfig.numberOfDisplay;
             }
         }
     }
@@ -71,7 +75,14 @@
                         detail: false,
                     };
                 callbackData = function(data) {
-                    dataNewComers = data['new-comers'];
+                    if (!data['new-comers'] && !(data['new-comers'] instanceof Array)) {
+                        return;
+                    }
+                    var arrDataNewComers = [];
+                    for (var i = 0, len = data['new-comers'].length; i < len && i < numberOfDisplay; i++) {
+                        arrDataNewComers.push(data['new-comers'][i]);
+                    }
+                    dataNewComers = arrDataNewComers;
                     list.update(dataNewComers).then(function () {
                         if (!isInit.list) {
                             if (!isInit.detail && dataNewComers.length > indexCurrent) {
@@ -114,7 +125,8 @@
                     + (parseInt($detail.css('border-bottom')) || 0)
                     + (parseInt($detail.css('padding-bottom')) || 0),
                 scrollTopDetail = $detail.get(0).scrollTop,
-                scrillHeightDetail = $detail.get(0).scrollHeight;
+                scrillHeightDetail = $detail.get(0).scrollHeight,
+                flgNext;
 
             if ((scrollTopDetail + heightDetail) < scrillHeightDetail) {
                 $detail.animate({
@@ -123,7 +135,9 @@
                     switchDetail($detail, end);
                 });
             } else {
-                if (dataNewComers.length > (indexCurrent + 1)) {
+                flgNext = dataNewComers.length > (indexCurrent + 1);
+
+                if (flgNext) {
                     var $list = $container.find('.list'),
                         $items = $list.find('.item');
 
@@ -151,8 +165,7 @@
                     detail.show($detail, dataNewComers[indexCurrent]).then(function () {
                         switchDetail($detail, end);
                     });
-                }
-                else if (typeof(end) == 'function') {
+                } else if (typeof(end) == 'function') {
                     end();
                 }
             }
